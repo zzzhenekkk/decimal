@@ -10,7 +10,7 @@ typedef struct
 
 
 // узнать значение конкретного бита
-int s21_get_bit(s21_decimal num, int cur_bit) {
+int get_bit(s21_decimal num, int cur_bit) {
   int bit;
   if ((num.bits[cur_bit / 32] & (1 << cur_bit % 32)) == 0) {
     bit = 0;
@@ -20,6 +20,16 @@ int s21_get_bit(s21_decimal num, int cur_bit) {
 
   return bit;
 }
+
+// установить значение конкретного бита
+void set_bit(s21_decimal* num, int bit, int result) {
+  if (result == 1) {
+    num->bits[bit / 32] = num->bits[bit / 32] | (1 << bit % 32);
+  } else if (result == 0) {
+    num->bits[bit / 32] = num->bits[bit / 32] & ~(1 << bit % 32);
+  }
+}
+
 
 void from_10_to_2(int n) {
     if (n == 0)  return;
