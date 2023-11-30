@@ -21,6 +21,7 @@ s21_decimal init_decimal(int i1, int i2, int i3, int sign, int exp){
     d.bits[1] = i2;
     d.bits[0] = i1;
     if (sign)   set_minus(&d);
+    if (exp)  set_scale(&d, exp);
     return d;
 }
 
