@@ -25,9 +25,10 @@ void from_dec_2_bin(s21_decimal d) {
     for (int i = 3; i >=0; i--) {
         int mask = 0x8000;
         for (int digit = 1; digit <= 30; digit++){
-            mask<<digit;
+            printf("%d", (mask&d.bits[i])>>(31-digit));
+            mask = mask>>digit;
         }
-            printf("%d", mask&d.bits[i]);
+        printf(" ");
     }
 }
 
@@ -72,7 +73,10 @@ int main(){
     // printf("%i", n);
     s21_decimal dst = {0};
     dst = init_decimal(1,2,3,1,0);
-    show_decimal(dst);
+
+    // show_decimal(dst);
+
+    from_dec_2_bin(dst);
     // for(int i = 0; i<4; i++)
     //     dst->bits[i] = 0;
     // int a = 7;
