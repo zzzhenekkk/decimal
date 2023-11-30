@@ -8,6 +8,29 @@ typedef struct
     unsigned int bits[4];
 } s21_decimal;
 
+
+// узнать значение конкретного бита
+int get_bit(s21_decimal num, int cur_bit) {
+  int bit;
+  if ((num.bits[cur_bit / 32] & (1 << cur_bit % 32)) == 0) {
+    bit = 0;
+  } else {
+    bit = 1;
+  }
+
+  return bit;
+}
+
+// установить значение конкретного бита
+void set_bit(s21_decimal* num, int bit, int result) {
+  if (result == 1) {
+    num->bits[bit / 32] = num->bits[bit / 32] | (1 << bit % 32);
+  } else if (result == 0) {
+    num->bits[bit / 32] = num->bits[bit / 32] & ~(1 << bit % 32);
+  }
+}
+
+
 void from_10_to_2(int n) {
     if (n == 0)  return;
     from_10_to_2(n/2);
