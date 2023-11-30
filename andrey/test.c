@@ -21,12 +21,13 @@ void from_10_to_2(int n) {
     printf("%d", n%2);
 }
 
+// распечатать decimal в двоичном виде
 void from_dec_2_bin(s21_decimal d) {
     for (int i = 3; i >=0; i--) {
-        int mask = 0x8000;
-        for (int digit = 1; digit <= 30; digit++){
-            printf("%d", (mask&d.bits[i])>>(31-digit));
-            mask = mask>>digit;
+        int shift = 30;
+        for (unsigned int mask = 0x80000000; mask; mask>>=1){
+            printf("%d", (mask&d.bits[i])>>(shift+1));
+            shift--;
         }
         printf(" ");
     }
@@ -74,7 +75,8 @@ int main(){
     s21_decimal dst = {0};
     dst = init_decimal(1,2,3,1,0);
 
-    // show_decimal(dst);
+    show_decimal(dst);
+    printf("\n");
 
     from_dec_2_bin(dst);
     // for(int i = 0; i<4; i++)
