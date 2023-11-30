@@ -24,8 +24,13 @@ void set_bit(s21_decimal* num, int bit, int result) {
 
 
 // устанавливает минус
-void set_minus(s21_decimal* num){
-   set_bit(num, 127, 1);
+void set_minus(s21_decimal* num, int sign){
+    set_bit(num, 127, sign);
+}
+
+// // получить знак
+int get_sign(s21_decimal num) {
+    return get_bit(num, 127);
 }
 
 

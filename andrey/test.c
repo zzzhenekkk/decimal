@@ -74,6 +74,7 @@ int main(){
     // printf("%i", n);
     s21_decimal dst = {0};
     dst = init_decimal(1,2,333,1,0);
+    get_minus(dst);
 
     show_decimal(dst);
     printf("\n");
