@@ -30,4 +30,6 @@ int set_scale (s21_decimal * num, int scale);
 // инициализируем децимал
 s21_decimal  init_decimal(int i1, int i2, int i3, int sign, int exp);
 
+void set_minus(s21_decimal* num);
+
 #endif  // S21_DECIMAL
