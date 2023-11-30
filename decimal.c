@@ -47,15 +47,27 @@ s21_decimal init_decimal(int i1, int i2, int i3, int sign, int exp){
     d.bits[2] = i3;
     d.bits[1] = i2;
     d.bits[0] = i1;
-    if (sign)   d.bits[3]|(1<<31);
+    if (sign)   set_minus(&d);
     return d;
+}
+
+int s21_from_int_to_decimal(int src, s21_decimal *dst){
+    *dst = init_decimal(
+    src<0 ? ~(src) + 1 : src,
+    0,
+    0, 
+    src<0 ? 1:0, 
+    0
+    );
+    return 0;
 }
 
 
 
 int main(){
     s21_decimal dec = {0};
-    set_minus(&dec);
+    // set_minus(&dec);
+    s21_from_int_to_decimal(-5, &dec);
     print_decimal(dec);
     return 0;
 }
