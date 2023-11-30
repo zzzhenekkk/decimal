@@ -8,17 +8,23 @@
 // - 3 - деление на 0 
 
 int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
-    int res_ret = 0;
-
+    int status = 0;
+    // проверяем указатель на result
     if (result) {
-
+        // обнулили decimal
+        init_decimal(0,0,0,0,0);
+        // если scale не равны, то привели к общему коэфициенту
         if (get_scale(value_1) != get_scale(value_2)) normalize_decimal(&value_1, &value_2);
-        if ()
+        if (get_sign(value_1) ^ get_sign(value_2)) {
+
+        } else {
+
+        }
 
 
 
 
-    }
+    } else status = 1;
 
     // если коэфициент масштабирования равен, то складываем мантисы
     if (get_scale(value_1) == get_scale(value_2)) {
@@ -29,7 +35,24 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
 
 
 
-    return res_ret;
+    return status;
+}
+
+int normalize_decimal(s21_decimal * value_1, s21_decimal * value_2) {
+    int status = 0;
+    if (value_1 && value_2) {
+        int scale1 = get_scale(*value_1);
+        int scale2 = get_scale(*value_2);
+        if (scale1 > scale2) {
+            if (shift_bits_left (scale2, scale1 - scale2)) status = 1;
+            set_scale(scale2, scale1 - scale2);
+        }
+    } else status = 1;
+    return status;
+}
+
+int shift_bits_left (s21_decimal * value_1, int num) {
+    return 0;
 }
 
 int sum_mantis {
