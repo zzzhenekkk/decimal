@@ -22,7 +22,7 @@ void set_bit(s21_decimal* num, int bit, int result) {
   }
 }
 
-// распечатаем наш decimal от 0 до 32*
+// распечатаем наш decimal от 0 до 127
 void print_decimal (s21_decimal num){
     for (int i = 3; i >= 0; i--) {
         printf("[");
@@ -47,15 +47,46 @@ s21_decimal  init_decimal(int i1, int i2, int i3, int sign, int exp){
     d.bits[2] = i3;
     d.bits[1] = i2;
     d.bits[0] = i1;
-    if (sign)   set_minus(d.bits[3]);
+    if (sign) set_minus(d.bits[3]);
     return d;
 }
 
+// узнать значение scale коэфициента масштабирования
+int get_scale (s21_decimal num) {
+    int mask = 0b11111111;
+    mask <<= 16;
+    mask = num.bits[3] & mask;
+    mask >>= 16;
+    return mask;
+}
+
+// установить значение scale коэфициента масштабирования, 0 - успешно, 1 - еррор
+int set_scale (s21_decimal * num, int scale) {
+    int result = 0;
+    if (scale < 256 && scale >=0) {
+        for (int i = 0; i < 8; i++) {
+            set_bit(num, i + 16 + 96, scale % 2);
+            scale >>= 1;
+        }
+    } else {
+        result = 1;
+    }
+    return result;
+}
 
 
 int main(){
     s21_decimal dec = {0};
     set_bit(&dec, 95, 1);
+    set_bit(&dec, 112, 1);
+    set_bit(&dec, 113, 1);
+    set_bit(&dec, 114, 1);
+    set_bit(&dec, 119, 1);
+    // set_bit(&dec, 119, 1);
+    print_decimal(dec);
+    printf("\n%d", get_scale(dec));
+    set_scale(&dec, 127);
+    printf("\n%d\n", get_scale(dec));
     print_decimal(dec);
     return 0;
 }
