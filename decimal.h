@@ -30,8 +30,10 @@ int set_scale (s21_decimal * num, int scale);
 // инициализируем децимал
 s21_decimal init_decimal(int i1, int i2, int i3, int sign, int exp);
 
+// установить минус
 void set_minus(s21_decimal* num);
-s21_decimal init_decimal(int i1, int i2, int i3, int sign, int exp);
+
+// перевести из int в decimal (всегда успешно)
 int s21_from_int_to_decimal(int src, s21_decimal *dst);
 
 #endif  // S21_DECIMAL
