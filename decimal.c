@@ -37,17 +37,17 @@ void print_decimal (s21_decimal num){
 } 
 
 // устанавливает минус
-unsigned int set_minus(unsigned int n){
-    return (1<<31)|n;
+void set_minus(s21_decimal* num){
+   set_bit(num, 127, 1);
 }
 
 // инициализируем децимал
-s21_decimal  init_decimal(int i1, int i2, int i3, int sign, int exp){
+s21_decimal init_decimal(int i1, int i2, int i3, int sign, int exp){
     s21_decimal d;
     d.bits[2] = i3;
     d.bits[1] = i2;
     d.bits[0] = i1;
-    if (sign)   set_minus(d.bits[3]);
+    if (sign)   d.bits[3]|(1<<31);
     return d;
 }
 
@@ -55,7 +55,7 @@ s21_decimal  init_decimal(int i1, int i2, int i3, int sign, int exp){
 
 int main(){
     s21_decimal dec = {0};
-    set_bit(&dec, 95, 1);
+    set_minus(&dec);
     print_decimal(dec);
     return 0;
 }
