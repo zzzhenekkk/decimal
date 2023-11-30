@@ -30,7 +30,7 @@ s21_decimal init_decimal(int i1, int i2, int i3, int sign, int exp){
 int main(){
     s21_decimal dec = {0};
     // set_minus(&dec);
-    s21_from_int_to_decimal(-5, &dec);
+    s21_from_int_to_decimal(5, &dec);
     set_bit(&dec, 112, 1);
     set_bit(&dec, 113, 1);
     set_bit(&dec, 114, 1);
@@ -41,5 +41,6 @@ int main(){
     set_scale(&dec, 127);
     printf("\n%d\n", get_scale(dec));
     print_decimal(dec);
+    set_minus(&dec);
     return 0;
 }

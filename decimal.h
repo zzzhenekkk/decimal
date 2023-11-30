@@ -15,7 +15,7 @@ typedef struct
 // узнать значение конкретного бита
 int get_bit(s21_decimal num, int cur_bit);
 
-// установить значение конкретного бита
+// установить значение конкретного бита, bit - номер бита, result - какое значение записать
 void set_bit(s21_decimal* num, int bit, int result);
 
 // распечатаем наш decimal от 0 до 127
@@ -24,7 +24,7 @@ void print_decimal (s21_decimal num);
 // узнать значение scale коэфициента масштабирования
 int get_scale (s21_decimal num);
 
-// установить значение scale коэфициента масштабирования, 0 - успешно, 1 - еррор
+// установить значение scale коэфициента масштабирования, return 0 - успешно, 1 - выход за границы
 int set_scale (s21_decimal * num, int scale);
 
 // инициализируем децимал
