@@ -1,9 +1,4 @@
-
-
-typedef struct 
-{
-    unsigned int bits[4];
-} s21_decimal;
+#include "decimal.h"
 
 
 // узнать значение конкретного бита
@@ -27,19 +22,40 @@ void set_bit(s21_decimal* num, int bit, int result) {
   }
 }
 
-// распечатаем наш decimal от 0 до 
-void print_decimal (s21_decimal* num){
-    for (int i = 0; i < 4; i++) {
+// распечатаем наш decimal от 0 до 32*
+void print_decimal (s21_decimal num){
+    for (int i = 3; i >= 0; i--) {
         printf("[");
-        for (int j = 0; j < 32; i++) {
-            printf("%d", get_bit(*num, i*32 + j));
+        for (int j = 31; j >= 0; j--) {
+            if (i==3 && j==23) printf("->");
+            printf("%d", get_bit(num, i*32 + j));
+            if (i==3 && j==16) printf("<-");
+            if (i==3 && j==31) printf(".");
         }
         printf("] ");
     }
+} 
+
+// устанавливает минус
+unsigned int set_minus(unsigned int n){
+    return (1<<31)|n;
 }
 
+// инициализируем децимал
+s21_decimal  init_decimal(int i1, int i2, int i3, int sign, int exp){
+    s21_decimal d;
+    d.bits[2] = i3;
+    d.bits[1] = i2;
+    d.bits[0] = i1;
+    if (sign)   set_minus(d.bits[3]);
+    return d;
+}
+
+
+
 int main(){
-    s21_decimal dec;
-    print_decimal(&dec);
+    s21_decimal dec = {0};
+    set_bit(&dec, 95, 1);
+    print_decimal(dec);
     return 0;
 }

@@ -7,5 +7,11 @@
 #include <limits.h>
 #include <unistd.h>
 
+typedef struct 
+{
+    unsigned int bits[4];
+} s21_decimal;
+
+
 
 #endif  // S21_DECIMAL
