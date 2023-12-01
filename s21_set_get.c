@@ -1,4 +1,4 @@
-#include "decimal.h"
+#include "s21_decimal.h"
 
 // узнать значение конкретного бита
 int get_bit(s21_decimal num, int cur_bit) {

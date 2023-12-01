@@ -1,4 +1,4 @@
-#include "decimal.h"
+#include "s21_decimal.h"
 
 // Функции возвращают код ошибки:
 // - 0 - OK
@@ -33,11 +33,16 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
     // печатаем для проверки
     print_big_decimal(&result_big);
 
+    // // обрабатываем и отдаем в s21_decimal
+    // result = big_to_s21decimal(result, &result_big);
+
   } else {
     status = 1;
   }
   return status;
 }
+
+// int big_to_s21decimal(result, &result_big);
 
 // складываем мантисы big decimal
 void sum_mantissa(big_decimal *bvalue_1, big_decimal *bvalue_2,

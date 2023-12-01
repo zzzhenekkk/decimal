@@ -1,4 +1,4 @@
-#include "decimal.h"
+#include "s21_decimal.h"
 
 // распечатаем наш decimal от 0 до 127
 void print_big_decimal(big_decimal* num) {
