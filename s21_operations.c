@@ -6,6 +6,7 @@
 // - 2 - число слишком мало или равно отрицательной бесконечности
 // - 3 - деление на 0
 
+// суммируем decimal и выводим в result
 int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   int status = 0;
   // проверяем указатель на result
@@ -33,23 +34,42 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
     // печатаем для проверки
     print_big_decimal(&result_big);
 
-    // // обрабатываем и отдаем в s21_decimal
-    // result = big_to_s21decimal(result, &result_big);
+    // обрабатываем и отдаем в s21_decimal
+    status = big_to_s21decimal(result, &result_big);
 
   } else {
-    status = 1;
+    status = -1;
   }
   return status;
 }
 
-// int big_to_s21decimal(result, &result_big);
+int big_to_s21decimal(s21_decimal * result, big_decimal *result_big) {
+  int status = 0;
+  // сколько нулей слева, если занулеванное, то one_position_left = -1
+  zeroes_left_big(result_big);
+  // проверка на переполнение 
+  if ((result_big->one_position_left - result_big->exponenta) > BITS_S21) {status = 1;}
+  // проверка входит ли мантисса в пределы 95 бит, иначе банковское округление
+  else if (result_big->one_position_left > BITS_S21){
+    bank_rounding(result_big);
+  } else {
+    big_to_s21decimal_95();
+  }
+
+
+
+}
+
+// 
+void big_to_s21decimal_95();
 
 // складываем мантисы big decimal
 void sum_mantissa(big_decimal *bvalue_1, big_decimal *bvalue_2,
                   big_decimal *result) {
+  int tmp = 0;
+  int var = 0;
+
   for (int i = 0; i <= BITS_BIG; i++) {
-    int tmp = 0;
-    int var = 0;
     var = (get_bit_big(bvalue_1, i) + get_bit_big(bvalue_2, i) + tmp);
     if (var == 3) {
       tmp = 1;
@@ -60,10 +80,11 @@ void sum_mantissa(big_decimal *bvalue_1, big_decimal *bvalue_2,
     } else if (var == 1) {
       set_bit_big(result, i, 1);
       tmp = 0;
-    } else {
+    } else if (var == 0){
       set_bit_big(result, i, 0);
       tmp = 0;
     }
+
   }
 }
 
