@@ -85,4 +85,31 @@ int zeroes_left(s21_decimal value);
 // устанавливаем big_decimal по s21_decimal
 void init_big(s21_decimal value, big_decimal* big);
 
+//универсальное сравнение
+int universal_comparision(s21_decimal dec1, s21_decimal dec2);
+
+//сравнение мантисс
+int mantissa_comparision(s21_decimal dec1, s21_decimal dec2);
+
+//сравнение скейлов
+int scale_comparision(s21_decimal dec1, s21_decimal dec2);
+
+//двигаем биты на 1
+void move_bits_by_one(s21_decimal *dec);
+
+// REQUIRED FUNC
+// сравнение меньше-ли dec1, чем dec2
+int s21_is_less(s21_decimal dec1, s21_decimal dec2);
+
+int s21_is_less_or_equal(s21_decimal dec1, s21_decimal dec2);
+
+int s21_is_greater(s21_decimal dec1, s21_decimal dec2);
+
+int s21_is_greater_or_equal(s21_decimal dec1, s21_decimal dec2);
+
+int s21_is_equal(s21_decimal dec1, s21_decimal dec2);
+
+int s21_is_not_equal(s21_decimal dec1, s21_decimal dec2);
+
+
 #endif  // S21_DECIMAL

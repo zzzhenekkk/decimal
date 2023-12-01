@@ -43,11 +43,14 @@ void set_bit_big(big_decimal* num, int bit, int result) {
 }
 
 // устанавливает минус
-void set_minus(s21_decimal* num, int sign) { set_bit(num, 127, sign); }
+void set_minus(s21_decimal* num,int sign){
+   set_bit(num, 127, sign);
+}
 
 // // получить знак
-int get_sign(s21_decimal num) { return get_bit(num, 127); }
-
+int get_sign(s21_decimal num) {
+    return get_bit(num, 127);
+}
 // узнать значение scale коэфициента масштабирования
 int get_scale(s21_decimal num) {
   int mask = 0b11111111;
