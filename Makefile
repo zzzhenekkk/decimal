@@ -3,14 +3,17 @@ CFLAGS=-Wall -Werror -Wextra -std=c11
 
 all: evgeniy
 
-evgeniy:
+evgeniy: clean
 	$(CC) $(CFLAGS) s21*.c evgeniy.c -o evgeniy
 	./evgeniy
 
-andrey:
+andrey: clean
 	$(CC) $(CFLAGS) s21*.c andrey.c -o andrey
 	./andrey
 
-gleb:
+gleb: clean
 	$(CC) $(CFLAGS) s21*.c gleb.c -o gleb
 	./gleb
+
+clean: clean
+	rm -rf evgeniy andrey gleb
