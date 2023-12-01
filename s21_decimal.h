@@ -9,6 +9,7 @@
 
 // количество битов большого массива
 #define BITS_BIG 255
+#define BITS_S21 95
 
 typedef struct {
   unsigned int bits[4];
@@ -49,6 +50,12 @@ void shift_left_big(big_decimal* bvalue, int def);
 
 //////////////////////////////////////////////////////////////////////////
 
+// суммируем decimal и выводим в result
+int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
+
+
+
+
 // узнать значение конкретного бита
 int get_bit(s21_decimal num, int cur_bit);
 
@@ -84,5 +91,8 @@ int zeroes_left(s21_decimal value);
 
 // устанавливаем big_decimal по s21_decimal
 void init_big(s21_decimal value, big_decimal* big);
+
+// заполняем decimal под макс для проверки
+void full_decimal(s21_decimal * num);
 
 #endif  // S21_DECIMAL
