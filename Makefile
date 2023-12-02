@@ -16,4 +16,4 @@ gleb: clean
 	./gleb_e
 
 clean: clean
-	rm -rf evgeniy andrey gleb
+	rm -rf evgeniy_e andrey_e gleb_e
