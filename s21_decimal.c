@@ -25,3 +25,10 @@ s21_decimal init_decimal(int i1, int i2, int i3, int sign, int exp) {
   if (exp) set_scale(&d, exp);
   return d;
 }
+
+// заполняем decimal под макс для проверки
+void full_decimal(s21_decimal * num) {
+  for (int i = 0; i < 96; i++) {
+    set_bit(num, i, 1);
+  }
+}
