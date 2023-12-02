@@ -23,19 +23,28 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
     init_big(*result, &result_big); 
     // печатаем для проверки
     print_big_decimal(&bvalue_1);
+
+    shift_left_big(&bvalue_1, 200);
+    zeroes_left_big(&bvalue_1);
+    print_big_decimal(&bvalue_1);
+
     print_big_decimal(&bvalue_2);
 
-    // приводим big_decimal к одной экспоненте
-    normalize_big(&bvalue_1, &bvalue_2);
+    // // приводим big_decimal к одной экспоненте
+    // normalize_big(&bvalue_1, &bvalue_2);
 
-    // складываем мантиссы
-    sum_mantissa(&bvalue_1, &bvalue_2, &result_big);
+    // // складываем мантиссы
+    // sum_mantissa(&bvalue_1, &bvalue_2, &result_big);
+    // zeroes_left_big(&result_big);
 
     // печатаем для проверки
     print_big_decimal(&result_big);
 
-    // обрабатываем и отдаем в s21_decimal
-    status = big_to_s21decimal(result, &result_big);
+
+    // shift_left_big(&result_big, 0);
+    print_big_decimal(&result_big);
+    // // обрабатываем и отдаем в s21_decimal
+    // status = big_to_s21decimal(result, &result_big);
 
   } else {
     status = -1;
@@ -43,24 +52,25 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   return status;
 }
 
-int big_to_s21decimal(s21_decimal *result, big_decimal *result_big) {
-  int status = 0;
-  // сколько нулей слева, если занулеванное, то one_position_left = -1
-  zeroes_left_big(result_big);
-  // проверка на переполнение
-  if ((result_big->one_position_left - result_big->exponenta) > BITS_S21) {
-    status = 1;
-  }
-  // проверка входит ли мантисса в пределы 95 бит, иначе банковское округление
-  else if (result_big->one_position_left > BITS_S21) {
-    bank_rounding(result_big);
-  } else {
-    big_to_s21decimal_95();
-  }
-}
+// int big_to_s21decimal(s21_decimal *result, big_decimal *result_big) {
+//   int status = 0;
+//   // сколько нулей слева, если занулеванное, то one_position_left = -1
+//   zeroes_left_big(result_big);
+//   // проверка на переполнение
+//   if ((result_big->one_position_left - result_big->exponenta) > BITS_S21) {
+//     status = 1;
+//   }
+//   // проверка входит ли мантисса в пределы 95 бит, иначе банковское округление
+//   else if (result_big->one_position_left > BITS_S21) {
+//     // bank_rounding(result_big);
+//   } else {
+//     // big_to_s21decimal_95();
+//   }
+//   return status;
+// }
 
 //
-void big_to_s21decimal_95();
+// void big_to_s21decimal_95();
 
 // складываем мантисы big decimal
 void sum_mantissa(big_decimal *bvalue_1, big_decimal *bvalue_2,
@@ -90,8 +100,8 @@ void sum_mantissa(big_decimal *bvalue_1, big_decimal *bvalue_2,
 void normalize_big(big_decimal *bvalue_1, big_decimal *bvalue_2) {
   int def = bvalue_1->exponenta - bvalue_2->exponenta;
   if (def > 0) {
-    multiply_10_mantis(bvalue_2, def);
-    multiply_mantis();
+    // multiply_10_mantis(bvalue_2, def);
+    // multiply_mantis();
     // shift_left_big(bvalue_2, def);
     zeroes_left_big(bvalue_2);
   } else if (def < 0) {
@@ -101,16 +111,25 @@ void normalize_big(big_decimal *bvalue_1, big_decimal *bvalue_2) {
 }
 
 // домножаем мантису на экспоненту 10
-multiply_10_mantis(big_decimal *bvalue, int def) { bvalue }
+// multiply_10_mantis(big_decimal *bvalue, int def) { bvalue }
 
-// сдвигаем big_decimal налево по битам
-void shift_left_big(big_decimal *bvalue, int def) {
+// сдвигаем big_decimal налево по битам, если вылезли за пределы, вернет 1, если все ок то 0
+int shift_left_big(big_decimal *bvalue, int def) {
+  int status = 0;
+  int dopusk = 0;
+
   zeroes_left_big(bvalue);  // устанавливаем нули слева и позицию первой 1
+
+  if ((BITS_BIG - bvalue->one_position_left) < def) status = 1;
   for (int i = bvalue->one_position_left; i >= 0; i--) {
     set_bit_big(bvalue, i + def, get_bit_big(bvalue, i));
   }
-  // обновляем экспоненту на текущую
-  bvalue->exponenta += def;
+  // доставляем нули справа
+  for (int i = 0; i < def; i++) {
+    set_bit_big(bvalue, i, 0);
+  }
+
+
 }
 
 // сколько нулей слева, если занулеванное, то one_position_left = -1

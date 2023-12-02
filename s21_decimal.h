@@ -45,8 +45,8 @@ void print_big_decimal(big_decimal* num);
 // сколько нулей слева, если занулеванное, то one_position_left = -1
 void zeroes_left_big(big_decimal* bvalue);
 
-// сдвигаем big_decimal налево по битам
-void shift_left_big(big_decimal* bvalue, int def);
+// сдвигаем big_decimal налево по битам, если вылезли за пределы, вернет 1, если все ок то 0
+int shift_left_big(big_decimal *bvalue, int def);
 
 //////////////////////////////////////////////////////////////////////////
 
