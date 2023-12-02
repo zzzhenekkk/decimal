@@ -2,15 +2,16 @@
 
 // распечатаем наш decimal от 0 до 127
 void print_decimal(s21_decimal num) {
+  printf("\n");
   for (int i = 3; i >= 0; i--) {
-    printf("[");
+    if (i != 0 && i != 1) printf("[");
     for (int j = 31; j >= 0; j--) {
       if (i == 3 && j == 23) printf("->");
       printf("%d", get_bit(num, i * 32 + j));
       if (i == 3 && j == 16) printf("<-");
       if (i == 3 && j == 31) printf(".");
     }
-    printf("] ");
+    if (i != 1 && i != 2) printf("] ");
   }
 }
 
@@ -30,3 +31,11 @@ s21_decimal init_decimal(int i1, int i2, int i3, int sign, int exp) {
 
 //   }
 // }
+
+
+// заполняем decimal под макс для проверки
+void full_decimal(s21_decimal * num) {
+  for (int i = 0; i < 96; i++) {
+    set_bit(num, i, 1);
+  }
+}
