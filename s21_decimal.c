@@ -24,3 +24,9 @@ s21_decimal init_decimal(int i1, int i2, int i3, int sign, int exp) {
   if (exp) set_scale(&d, exp);
   return d;
 }
+
+// big_decimal* mul_mantissa(big_decimal a, big_decimal b, big_decimal* res) {
+//   for (int i = 0; i <= b.zero_left; i++){
+
+//   }
+// }
