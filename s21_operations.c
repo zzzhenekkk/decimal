@@ -20,7 +20,7 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
     big_decimal bvalue_2 = {0};
     init_big(value_2, &bvalue_2);
     big_decimal result_big = {0};
-    init_big(*result, &result_big);
+    init_big(*result, &result_big); 
     // печатаем для проверки
     print_big_decimal(&bvalue_1);
     print_big_decimal(&bvalue_2);
@@ -135,6 +135,7 @@ void init_big(s21_decimal value, big_decimal *big) {
   big->bits[0] = value.bits[0];
   big->bits[1] = value.bits[1];
   big->bits[2] = value.bits[2];
+  zeroes_left_big(big);
 }
 
 // // если scale не равны, то приводим к общему коэфициенту
