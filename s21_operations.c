@@ -24,11 +24,14 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
     // печатаем для проверки
     print_big_decimal(&bvalue_1);
 
-    shift_left_big(&bvalue_1, 200);
-    zeroes_left_big(&bvalue_1);
+    int asd = shift_left_big(&bvalue_1, 10);
     print_big_decimal(&bvalue_1);
+    printf("\n%d\n", asd);
+    int dsa = shift_right_big(&bvalue_1, 30);
+    print_big_decimal(&bvalue_1);
+    printf("\n%d\n", dsa);
 
-    print_big_decimal(&bvalue_2);
+    // print_big_decimal(&bvalue_2);
 
     // // приводим big_decimal к одной экспоненте
     // normalize_big(&bvalue_1, &bvalue_2);
@@ -38,11 +41,11 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
     // zeroes_left_big(&result_big);
 
     // печатаем для проверки
-    print_big_decimal(&result_big);
+    // print_big_decimal(&result_big);
 
 
     // shift_left_big(&result_big, 0);
-    print_big_decimal(&result_big);
+    // print_big_decimal(&result_big);
     // // обрабатываем и отдаем в s21_decimal
     // status = big_to_s21decimal(result, &result_big);
 
@@ -116,20 +119,47 @@ void normalize_big(big_decimal *bvalue_1, big_decimal *bvalue_2) {
 // сдвигаем big_decimal налево по битам, если вылезли за пределы, вернет 1, если все ок то 0
 int shift_left_big(big_decimal *bvalue, int def) {
   int status = 0;
-  int dopusk = 0;
 
   zeroes_left_big(bvalue);  // устанавливаем нули слева и позицию первой 1
 
   if ((BITS_BIG - bvalue->one_position_left) < def) status = 1;
+
   for (int i = bvalue->one_position_left; i >= 0; i--) {
+    // для того, чтобы не выходить за пределы массива
+    if ((i+def) <= BITS_BIG) {
     set_bit_big(bvalue, i + def, get_bit_big(bvalue, i));
+    }
   }
   // доставляем нули справа
   for (int i = 0; i < def; i++) {
     set_bit_big(bvalue, i, 0);
   }
+  zeroes_left_big(bvalue);  // устанавливаем нули слева и позицию первой 1
 
+  return status;
+}
 
+// сдвигаем big_decimal налево по битам, если вылезли за пределы, вернет 1, если все ок то 0
+int shift_right_big(big_decimal *bvalue, int def) {
+  int status = 0;
+
+  zeroes_left_big(bvalue);  // устанавливаем нули слева и позицию первой 1
+
+  if ((bvalue->one_right - def) < 0) status = 1;
+
+  for (int i = bvalue->one_right; i <= BITS_BIG; i++) {
+    // для того, чтобы не выходить за пределы массива
+    if ((i-def) >= 0) {
+    set_bit_big(bvalue, i - def, get_bit_big(bvalue, i));
+    }
+  }
+  // доставляем нули слева
+  for (int i = BITS_BIG; i > (bvalue->one_position_left - def); i--) {
+    set_bit_big(bvalue, i, 0);
+  }
+  zeroes_left_big(bvalue);  // устанавливаем нули слева и позицию первой 1
+
+  return status;
 }
 
 // сколько нулей слева, если занулеванное, то one_position_left = -1
@@ -147,6 +177,12 @@ void zeroes_left_big(big_decimal *bvalue) {
   if (i == -1) {
     bvalue->zero_left = BITS_BIG;
     bvalue->one_position_left = -1;
+  }
+  for (int j = 0; j <= BITS_BIG; j++) {
+    if (get_bit_big(bvalue, j) != 0) {
+      bvalue->one_right = j;
+      break;
+    }
   }
 }
 

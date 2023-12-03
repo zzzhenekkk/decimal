@@ -22,7 +22,7 @@ typedef struct {
   int negative;           // отрицательное ли число
   int zero_left;          // количество нулей слева
   int one_position_left;  // первая позиция 1 слева
-  int zero_right;
+  int one_right;          // первая единица справа
 } big_decimal;
 
 //////////////////// для работы с big_decimal //////////////////////////
@@ -47,6 +47,9 @@ void zeroes_left_big(big_decimal* bvalue);
 
 // сдвигаем big_decimal налево по битам, если вылезли за пределы, вернет 1, если все ок то 0
 int shift_left_big(big_decimal *bvalue, int def);
+
+// сдвигаем big_decimal направо по битам, если вылезли за пределы, вернет 1, если все ок то 0
+int shift_right_big(big_decimal *bvalue, int def);
 
 //////////////////////////////////////////////////////////////////////////
 
