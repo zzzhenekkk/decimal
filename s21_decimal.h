@@ -10,6 +10,7 @@
 // количество битов большого массива
 #define BITS_BIG 255
 #define BITS_S21 95
+#define BITS_B 8
 
 typedef struct {
   unsigned int bits[4];
@@ -29,8 +30,23 @@ typedef struct {
 // приводим big_decimal к одной экспоненте
 void normalize_big(big_decimal* bvalue_1, big_decimal* bvalue_2);
 
+// из бига в s21
+int big_to_s21decimal(s21_decimal *result, big_decimal *result_big);
+
+// переводим из биг ту с21 со старшим битом не больше 95
+void big_to_s21decimal_95(big_decimal * result_big, s21_decimal * result);
+
+// умножение мантис
+int multiply_mantis_big(big_decimal bvalue_1, big_decimal *bvalue_2, big_decimal *result);
+
+// обнуялем мантису биг децимал
+void zero_mantisa_big(big_decimal * result);
+
+// для приведения к одной экспоненте, домножаем на 10 биг децимал
+int multiply_10_mantis_big(big_decimal * bvalue, int def);
+
 // складываем мантисы big decimal
-void sum_mantissa(big_decimal* bvalue_1, big_decimal* bvalue_2,
+int sum_mantissa(big_decimal* bvalue_1, big_decimal* bvalue_2,
                   big_decimal* result);
 
 // установить значение конкретного бита для big_decimal
