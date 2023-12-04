@@ -11,6 +11,7 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   int status = 0;
   // проверяем указатель на result
   if (result) {
+    int equal_signs = 0;
     // обнулили result decimal
     *result = init_decimal(0, 0, 0, 0, 0);
 
@@ -23,18 +24,35 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
     // print_decimal(*result);
 
     normalize_big(&bvalue_1, &bvalue_2);
-    //     print_big_decimal(&bvalue_1);
+
+    // print_big_decimal(&bvalue_1);
     // print_big_decimal(&bvalue_2);
 
+    // равные ли у нас знаки
+    if (get_sign(value_1) == get_sign(value_2)) equal_signs = 1;
 
-    sum_mantissa(&bvalue_1, &bvalue_2, &result_b);
+    // если равные, то складываем мантисы
+    if (equal_signs) {
+      sum_mantissa(&bvalue_1, &bvalue_2, &result_b);
+      result_b.negative = bvalue_1.negative;
+    } else {  // если разные, то вычитаем
+      int compare = compare_mantis_big(&bvalue_1, &bvalue_2);
+      if (compare > 0) {
+        sub_mantis_big(&bvalue_1, &bvalue_2, &result_b);
+        result_b.negative = bvalue_1.negative;
+      } else if (compare < 0) {
+        sub_mantis_big(&bvalue_2, &bvalue_1, &result_b);
+        result_b.negative = bvalue_2.negative;
+      }
+    }
+
+    // дописываем экспоненту
     result_b.exponenta = bvalue_1.exponenta;
+    print_big_decimal(&result_b);
+    // print_big_decimal(&bvalue_2);
     // print_big_decimal(&bvalue_1);
     // print_big_decimal(&bvalue_2);
     // print_big_decimal(&result_b);
-
-
-
 
     big_to_s21decimal(result, &result_b);
 
@@ -44,15 +62,106 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   return status;
 }
 
+// вычитание decimal
+int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
+  int znak = get_sign(value_2);
+  set_minus(&value_2, !znak);
+  return s21_add(value_1, value_2, result);
+}
+
+// умножение decimal
+int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
+  int status = 0;
+  // проверяем указатель на result
+  if (result) {
+    int equal_signs = 0;
+    // обнулили result decimal
+    *result = init_decimal(0, 0, 0, 0, 0);
+
+    // переводим все в big_decimal
+    big_decimal bvalue_1 = {0};
+    init_big(value_1, &bvalue_1);
+    big_decimal bvalue_2 = {0};
+    init_big(value_2, &bvalue_2);
+    big_decimal result_b = {0};
+    // print_decimal(*result);
+
+    // normalize_big(&bvalue_1, &bvalue_2);
+
+    // print_big_decimal(&bvalue_1);
+    // print_big_decimal(&bvalue_2);
+
+    // равные ли у нас знаки
+    if (get_sign(value_1) == get_sign(value_2)) equal_signs = 1;
+
+    if (equal_signs) {
+      result_b.negative = 0;
+    } else {
+      result_b.negative = 1;
+    }
+
+    // дописываем экспоненту
+    result_b.exponenta = bvalue_1.exponenta + bvalue_2.exponenta;
+
+    if (multiply_mantis_big(bvalue_1, &bvalue_2, &result_b)) status = 1;
+
+    // при умножении на 0
+    zeroes_left_big(&result_b);
+    if (result_b.one_position_left == -1) {
+      result_b.negative = 0;
+      result_b.exponenta = 0;
+    }
+
+    print_big_decimal(&result_b);
+    // print_big_decimal(&bvalue_2);
+    // print_big_decimal(&bvalue_1);
+    // print_big_decimal(&bvalue_2);
+    // print_big_decimal(&result_b);
+
+    // // если есть возможность, снижаем экспоненту
+    // normilize_before_push(&result_b);
+
+    big_to_s21decimal(result, &result_b);
+
+  } else {
+    status = -1;
+  }
+  return status;
+}
+
+// // если есть возможность, снижаем экспоненту
+// void normalize_big(big_decimal *bvalue_1, big_decimal *bvalue_2) {
+//   int def = bvalue_1->exponenta - bvalue_2->exponenta;
+//   if (def > 0) {
+//     multiply_10_mantis_big(bvalue_2, def);
+//     zeroes_left_big(bvalue_2);
+//   } else if (def < 0) {
+//     multiply_10_mantis_big(bvalue_1, def);
+//     zeroes_left_big(bvalue_1);
+//   }
+// }
+
+// вычитание в формате большого децимала
+void sub_mantis_big(big_decimal *value_1, big_decimal *value_2,
+                    big_decimal *result) {
+  int tmp = 0, res = 0;
+  for (int i = 0; i <= BITS_BIG; i++) {
+    res = get_bit_big(value_1, i) - get_bit_big(value_2, i) - tmp;
+    tmp = res < 0;
+    res = abs(res);
+    set_bit_big(result, i, res % 2);
+  }
+}
+
 // для приведения к одной экспоненте, домножаем на 10 биг децимал
-int multiply_10_mantis_big(big_decimal * bvalue, int def) {
+int multiply_10_mantis_big(big_decimal *bvalue, int def) {
   int status = 0;
 
   // создаем 10 для биг децимал
   s21_decimal ten_s = {0};
   s21_from_int_to_decimal(10, &ten_s);
   big_decimal ten = {0};
-  init_big (ten_s,&ten);
+  init_big(ten_s, &ten);
   // big_decimal result = {0};
 
   for (int i = 1; i <= def; i++) {
@@ -62,12 +171,28 @@ int multiply_10_mantis_big(big_decimal * bvalue, int def) {
   return status;
 }
 
+// сравнение мантис big, 1 больше = 1, 2 больше = -1, по ровну = 0
+int compare_mantis_big(big_decimal *bvalue1, big_decimal *bvalue2) {
+  int result = 0;
+  for (int i = BITS_BIG; i >= 0; i--) {
+    int rvalue1 = 0, rvalue2 = 0;
+    rvalue1 = get_bit_big(bvalue1, i);
+    rvalue2 = get_bit_big(bvalue2, i);
+    if (rvalue1 != rvalue2) {
+      result = rvalue1 - rvalue2;
+      break;
+    }
+  }
+  return result;
+}
 
 // из бига в s21
 int big_to_s21decimal(s21_decimal *result, big_decimal *result_big) {
   int status = 0;
   // сколько нулей слева, если занулеванное, то one_position_left = -1
   zeroes_left_big(result_big);
+
+  if (result_big->negative) set_minus(result, 1);
 
   // проверка на переполнение
   if ((result_big->one_position_left - result_big->exponenta) > BITS_S21) {
@@ -84,7 +209,7 @@ int big_to_s21decimal(s21_decimal *result, big_decimal *result_big) {
 }
 
 // переводим из биг ту с21 со старшим битом не больше 95
-void big_to_s21decimal_95(big_decimal * result_big, s21_decimal * result) {
+void big_to_s21decimal_95(big_decimal *result_big, s21_decimal *result) {
   for (int i = 95; i >= 0; i--) {
     set_bit(result, i, get_bit_big(result_big, i));
   }
@@ -93,7 +218,7 @@ void big_to_s21decimal_95(big_decimal * result_big, s21_decimal * result) {
 
 // складываем мантисы big decimal
 int sum_mantissa(big_decimal *bvalue_1, big_decimal *bvalue_2,
-                  big_decimal *result) {
+                 big_decimal *result) {
   int status = 0;
   int tmp = 0;
   int var = 0;
@@ -134,7 +259,8 @@ void normalize_big(big_decimal *bvalue_1, big_decimal *bvalue_2) {
 // multiply_10_mantis(big_decimal *bvalue, int def) { bvalue }
 
 // умножение мантис биг децимал
-int multiply_mantis_big(big_decimal bvalue_1, big_decimal *bvalue_2, big_decimal *result) {
+int multiply_mantis_big(big_decimal bvalue_1, big_decimal *bvalue_2,
+                        big_decimal *result) {
   int status = 0;
   // big_decimal result = {0};
   // обнуляем мантиссу
@@ -143,23 +269,26 @@ int multiply_mantis_big(big_decimal bvalue_1, big_decimal *bvalue_2, big_decimal
   zeroes_left_big(bvalue_2);
   zeroes_left_big(&bvalue_1);
   for (int i = 0; i <= bvalue_2->one_position_left; i++) {
-    if (i != 0) if (shift_left_big(&bvalue_1, 1) == 1) {
-      status = 1;
-      break;
-    }
-    if (get_bit_big(bvalue_2, i)) if (sum_mantissa(result, &bvalue_1, result)) status = 1;
+    if (i != 0)
+      if (shift_left_big(&bvalue_1, 1) == 1) {
+        status = 1;
+        break;
+      }
+    if (get_bit_big(bvalue_2, i))
+      if (sum_mantissa(result, &bvalue_1, result)) status = 1;
   }
   return status;
 }
 
 // обнуялем мантису биг децимал
-void zero_mantisa_big(big_decimal * result) {
+void zero_mantisa_big(big_decimal *result) {
   for (int i = 0; i < BITS_B; i++) {
     result->bits[i] = 0;
-  } 
+  }
 }
 
-// сдвигаем big_decimal налево по битам, если вылезли за пределы, вернет 1, если все ок то 0
+// сдвигаем big_decimal налево по битам, если вылезли за пределы, вернет 1, если
+// все ок то 0
 int shift_left_big(big_decimal *bvalue, int def) {
   int status = 0;
 
@@ -169,8 +298,8 @@ int shift_left_big(big_decimal *bvalue, int def) {
 
   for (int i = bvalue->one_position_left; i >= 0; i--) {
     // для того, чтобы не выходить за пределы массива
-    if ((i+def) <= BITS_BIG) {
-    set_bit_big(bvalue, i + def, get_bit_big(bvalue, i));
+    if ((i + def) <= BITS_BIG) {
+      set_bit_big(bvalue, i + def, get_bit_big(bvalue, i));
     }
   }
   // доставляем нули справа
@@ -182,7 +311,8 @@ int shift_left_big(big_decimal *bvalue, int def) {
   return status;
 }
 
-// сдвигаем big_decimal налево по битам, если вылезли за пределы, вернет 1, если все ок то 0
+// сдвигаем big_decimal налево по битам, если вылезли за пределы, вернет 1, если
+// все ок то 0
 int shift_right_big(big_decimal *bvalue, int def) {
   int status = 0;
 
@@ -192,8 +322,8 @@ int shift_right_big(big_decimal *bvalue, int def) {
 
   for (int i = bvalue->one_right; i <= BITS_BIG; i++) {
     // для того, чтобы не выходить за пределы массива
-    if ((i-def) >= 0) {
-    set_bit_big(bvalue, i - def, get_bit_big(bvalue, i));
+    if ((i - def) >= 0) {
+      set_bit_big(bvalue, i - def, get_bit_big(bvalue, i));
     }
   }
   // доставляем нули слева
