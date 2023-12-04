@@ -11,6 +11,10 @@ andrey: clean
 	$(CC) $(CFLAGS) s21*.c andrey.c -o andrey_e
 	./andrey_e
 
+andrey_windows: clean
+	$(CC) $(CFLAGS) s21*.c andrey.c -o andrey_e.exe
+	andrey_e.exe
+
 gleb: clean
 	$(CC) $(CFLAGS) s21*.c gleb.c -o gleb_e
 	./gleb_e
