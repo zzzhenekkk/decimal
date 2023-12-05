@@ -24,10 +24,8 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
     // print_decimal(*result);
 
     normalize_big(&bvalue_1, &bvalue_2);
-
     // print_big_decimal(&bvalue_1);
     // print_big_decimal(&bvalue_2);
-
     // равные ли у нас знаки
     if (get_sign(value_1) == get_sign(value_2)) equal_signs = 1;
 
@@ -261,6 +259,7 @@ int preparation_big_decimal(big_decimal *result, int scale) {
   if ((result->bits[3] || result->bits[4] || result->bits[5] ||
        result->bits[6] || result->bits[7]))
     scale = -1;
+    
   return scale;
 }
 
@@ -448,10 +447,9 @@ int big_to_s21decimal(s21_decimal *result, big_decimal *result_big) {
 
 // переводим из биг ту с21 со старшим битом не больше 95
 void big_to_s21decimal_95(big_decimal *result_big, s21_decimal *result) {
-  for (int i = 95; i >= 0; i--) {
-    set_bit(result, i, get_bit_big(result_big, i));
+  for (int i = 0; i < 3; i++) {
+    result->bits[i]=result_big->bits[i];
   }
-  set_scale(result, result_big->exponenta);
 }
 
 // складываем мантисы big decimal
