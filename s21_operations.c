@@ -134,6 +134,9 @@ int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
 // деление
 int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
   int status = 0;
+  int zero1 = 0;
+  if (!is_zero_s21_decimal(value_1)) zero1 = 1;
+
   // проверка на 0, делить на 0 нельзя
   if (is_zero_s21_decimal(value_2)) {
     // создаем биг бецимал
@@ -160,7 +163,6 @@ int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
       res_scale = preparation_big_decimal(&b_result, 0);
     }
 
-
     if (res_scale >= 0) {
       big_to_s21decimal_95(&b_result, result);
       set_scale(result, res_scale);
@@ -171,40 +173,34 @@ int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
     // устанавливаем знак в результат
     if (get_sign(value_1) != get_sign(value_2)) set_minus(result, 1);
 
-
-
-
   } else {
     status = 3;
   }
   if (status == 1 && get_sign(*result)) status = 2;
-  if (status) zero_s21_decimal(result);
+  if (status || zero1) zero_s21_decimal(result);
   return status;
 }
 
 // зануляем s21_decimal
-void zero_s21_decimal(s21_decimal * value) {
+void zero_s21_decimal(s21_decimal *value) {
   value->bits[0] = value->bits[1] = value->bits[2] = value->bits[3] = 0;
 }
 
 // деление биг децимал
-int div_big(big_decimal value_1, big_decimal value_2,
-                        big_decimal *result) {
- 
+int div_big(big_decimal value_1, big_decimal value_2, big_decimal *result) {
   // временный биг децимал
   big_decimal tmp = {0};
   int b_2 = 0, bit_2 = 0, scale = 0, diff = 0, save_scale = 0;
-  
+
   // находим старшие разряды в биг децимал
   zeroes_left_big(&value_1);
   zeroes_left_big(&value_2);
   b_2 = value_2.one_position_left;
   bit_2 = b_2;
 
-
-  // проходимся в цикле до тех пор пока value 1 не пустой или не переберем все биты
+  // проходимся в цикле до тех пор пока value 1 не пустой или не переберем все
+  // биты
   for (int i = 0; i < 96 && is_zero_big_decimal(value_1);) {
-
     // для первого прогона это нам не нужно
     if (i > 0) {
       // value_2 сдвигаем на 1 влево
@@ -216,7 +212,7 @@ int div_big(big_decimal value_1, big_decimal value_2,
       save_scale++;
     }
 
-    // ураниваем 
+    // ураниваем
     scale = equal_bits_big_decimal(&value_1, &value_2);
     save_scale += scale;
     b_2 = 0;
@@ -284,8 +280,7 @@ void div_10_big_decimal(big_decimal *dst, int n) {
 }
 
 // уравнивание биг децимал
-int equal_bits_big_decimal(big_decimal *value_1,
-                                  big_decimal *value_2) {
+int equal_bits_big_decimal(big_decimal *value_1, big_decimal *value_2) {
   int scale = 0;
 
   // до тех пор пока value 2 больше value 1, домножаем value_1
@@ -303,8 +298,7 @@ int equal_bits_big_decimal(big_decimal *value_1,
 }
 
 // больше или равно биг дец 1 биг дец 2
-int is_greater_or_equal_big_decimal(big_decimal value_1,
-                                        big_decimal value_2) {
+int is_greater_or_equal_big_decimal(big_decimal value_1, big_decimal value_2) {
   int result = 0, out = 0;
   for (int i = 7; i >= 0 && !out && !result; i--) {
     if (value_1.bits[i] != 0 || value_2.bits[i] != 0) {
@@ -318,8 +312,7 @@ int is_greater_or_equal_big_decimal(big_decimal value_1,
 }
 
 // больше ли биг дец 1 биг дец 2
-int is_greater_big_decimal(big_decimal value_1,
-                               big_decimal value_2) {
+int is_greater_big_decimal(big_decimal value_1, big_decimal value_2) {
   int result = 0, out = 0;
   for (int i = 7; i >= 0 && !result && !out; i--) {
     if (value_1.bits[i] || value_2.bits[i]) {
@@ -333,13 +326,13 @@ int is_greater_big_decimal(big_decimal value_1,
 }
 
 // проверяет на ноль биг децимал
-int is_zero_big_decimal (big_decimal big) {
-    return big.bits[0] + big.bits[1] + big.bits[2] + big.bits[3] + big.bits[4] +
+int is_zero_big_decimal(big_decimal big) {
+  return big.bits[0] + big.bits[1] + big.bits[2] + big.bits[3] + big.bits[4] +
          big.bits[5] + big.bits[6] + big.bits[7];
 }
 
 // проверяет на ноль s21_decimal
-int is_zero_s21_decimal (s21_decimal value) {
+int is_zero_s21_decimal(s21_decimal value) {
   int res = 0;
   res = value.bits[0] + value.bits[1] + value.bits[2];
   return res;
@@ -357,28 +350,16 @@ int is_zero_s21_decimal (s21_decimal value) {
 //   }
 // }
 
-
 // // деление мантис биг децимала
 // int div_mantis_big(big_decimal *value_1, big_decimal *value_2,
 //                     big_decimal *result) {
 //     int status = 0;
 //     while (1) {
 
-
-
-
 //     }
-
-
-
-
-
 
 //   return status;
 // }
-
-
-
 
 // вычитание в формате большого децимала
 void sub_mantis_big(big_decimal value_1, big_decimal value_2,
@@ -410,7 +391,8 @@ int multiply_10_mantis_big(big_decimal *bvalue, int def) {
   return status;
 }
 
-// для приведения к одной экспоненте, домножаем на 10 биг децимал, не прибавляя результатирующую экспу
+// для приведения к одной экспоненте, домножаем на 10 биг децимал, не прибавляя
+// результатирующую экспу
 int multiply_10_mantis_big_w_e(big_decimal *bvalue, int def) {
   int status = 0;
 
@@ -426,7 +408,6 @@ int multiply_10_mantis_big_w_e(big_decimal *bvalue, int def) {
   }
   return status;
 }
-
 
 // сравнение мантис big, 1 больше = 1, 2 больше = -1, по ровну = 0
 int compare_mantis_big(big_decimal *bvalue1, big_decimal *bvalue2) {
