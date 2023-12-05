@@ -22,11 +22,12 @@ typedef struct {
   int exponenta;              // экспонента
   int negative;               // отрицательное ли число
   int zero_left;              // количество нулей слева
-  int one_position_left;      // первая позиция 1 слева
+  int one_position_left;      // старший бит
   int one_right;              // первая единица справа
 } big_decimal;
 
 //////////////////// для работы с big_decimal //////////////////////////
+
 // приводим big_decimal к одной экспоненте
 void normalize_big(big_decimal* bvalue_1, big_decimal* bvalue_2);
 
@@ -49,12 +50,15 @@ void zero_mantisa_big(big_decimal* result);
 // для приведения к одной экспоненте, домножаем на 10 биг децимал
 int multiply_10_mantis_big(big_decimal* bvalue, int def);
 
+// для приведения к одной экспоненте, домножаем на 10 биг децимал не прибавляем экспоненту
+int multiply_10_mantis_big_w_e(big_decimal *bvalue, int def);
+
 // складываем мантисы big decimal
 int sum_mantissa(big_decimal* bvalue_1, big_decimal* bvalue_2,
                  big_decimal* result);
 
 // вычитание мантисы big decimal
-void sub_mantis_big(big_decimal* value_1, big_decimal* value_2,
+void sub_mantis_big(big_decimal value_1, big_decimal value_2,
                     big_decimal* result);
 
 // установить значение конкретного бита для big_decimal
@@ -77,6 +81,34 @@ int shift_left_big(big_decimal* bvalue, int def);
 // если все ок то 0
 int shift_right_big(big_decimal* bvalue, int def);
 
+// устанавливаем big_decimal по s21_decimal
+void init_big(s21_decimal value, big_decimal* big);
+
+// больше ли биг децимал 
+int is_greater_big_decimal(big_decimal value_1,
+                               big_decimal value_2);
+
+// уравнивание биг децимал
+int equal_bits_big_decimal(big_decimal *value_1,
+                                  big_decimal *value_2);
+
+// деление биг децимал
+int div_big(big_decimal value_1, big_decimal value_2,
+                        big_decimal *result);
+
+// делим на 10 биг децимал уменьшая скейл
+void div_10_big_decimal(big_decimal *dst, int n);
+
+// подготовка к переводу к s21_decimal
+int preparation_big_decimal(big_decimal *result, int scale);
+
+// проверяет на ноль биг децимал
+int is_zero_big_decimal (big_decimal big);
+
+// больше или равно биг дец 1 биг дец 2
+int is_greater_or_equal_big_decimal(big_decimal value_1,
+                                        big_decimal value_2);
+
 //////////////////////////////////////////////////////////////////////////
 
 // суммируем decimal и выводим в result
@@ -87,6 +119,9 @@ int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal* result);
 
 // умножение
 int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal* result);
+
+// деление
+int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 
 // узнать значение конкретного бита
 int get_bit(s21_decimal num, int cur_bit);
@@ -121,10 +156,13 @@ int s21_from_int_to_decimal(int src, s21_decimal* dst);
 // можно ли реализовать сдвиг
 int zeroes_left(s21_decimal value);
 
-// устанавливаем big_decimal по s21_decimal
-void init_big(s21_decimal value, big_decimal* big);
+// зануляем s21_decimal
+void zero_s21_decimal(s21_decimal * value);
 
 // заполняем decimal под макс для проверки
 void full_decimal(s21_decimal* num);
+
+// проверяет на ноль s21_decimal
+int is_zero_s21_decimal (s21_decimal value);
 
 #endif  // S21_DECIMAL
