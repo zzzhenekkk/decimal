@@ -324,7 +324,7 @@ int is_greater_big_decimal(big_decimal value_1, big_decimal value_2) {
   return result;
 }
 
-// проверяет на ноль биг децимал
+// если big decimal = 0, то возвращает 0
 int is_zero_big_decimal(big_decimal big) {
   return big.bits[0] + big.bits[1] + big.bits[2] + big.bits[3] + big.bits[4] +
          big.bits[5] + big.bits[6] + big.bits[7];
@@ -486,7 +486,7 @@ void normalize_big(big_decimal *bvalue_1, big_decimal *bvalue_2) {
     multiply_10_mantis_big(bvalue_2, def);
     zeroes_left_big(bvalue_2);
   } else if (def < 0) {
-    multiply_10_mantis_big(bvalue_1, def);
+    multiply_10_mantis_big(bvalue_1, -def);
     zeroes_left_big(bvalue_1);
   }
 }
@@ -522,6 +522,17 @@ void zero_mantisa_big(big_decimal *result) {
     result->bits[i] = 0;
   }
 }
+
+// полное обнуление decimal
+void zero_big_decimal(big_decimal *result) {
+  zero_mantisa_big(result);
+  result->exponenta = 0;
+  result->negative = 0;
+  result->one_position_left = 0;
+  result->one_right = 0;
+  result->zero_left = 0;
+}
+
 
 // сдвигаем big_decimal налево по битам, если вылезли за пределы, вернет 1, если
 // все ок то 0
@@ -593,6 +604,39 @@ void zeroes_left_big(big_decimal *bvalue) {
       break;
     }
   }
+}
+
+// деление с big_decimal
+void division(big_decimal val1, big_decimal val2, big_decimal *res) {
+  int scale_dif = (val1.exponenta - val2.exponenta); // чисел с разными экспонентами
+  int q = 0;
+  big_decimal part = {0}; //вычитаемое из делителя при найденном q
+  big_decimal part_next = {0};  // вычитаемое из делителя при найденном q+1
+  big_decimal sum = {0}; // текущая сумма, которая должна знать ответом
+  big_decimal before_sum = {0}; // новый член в сумме
+  while (is_zero_big_decimal(val1) && sum.exponenta < 31) { // остаток (val1) != нулю или exp суммы < 31 
+    if (is_greater_big_decimal(val2, val1)) { // если остаток (изначально - это делимое) < делителя
+      multiply_10_mantis_big(&val1, 1); // домнажение остатка на 10 с учетом экспоненты
+      multiply_10_mantis_big(&sum, 1); // домнажение суммы на 10 с учетом экспоненты
+    }
+    q = 0;
+    zero_big_decimal(&part);
+    zero_big_decimal(&before_sum);
+    part_next = val2;
+    part = val2;
+    while (is_greater_or_equal_big_decimal(val1, part_next)) { // пока делитель(val2)*2^q < остаток
+      part = part_next;
+      shift_left_big(&part_next, 1); // Домнажение на 2 (формирование 2^q)
+      q++;
+    }
+    q--;
+    set_bit_big(&before_sum, q, 1); // формирование нового член в сумме
+    sum_mantissa(&sum, &before_sum, &sum); // добавление нового члена к сумме
+    sub_mantis_big(val1, part, &val1); // остаток записываем в val1
+  }
+  sum.exponenta += scale_dif; // учет экспоненты
+  *res = sum;
+
 }
 
 // устанавливаем big_decimal по s21_decimal

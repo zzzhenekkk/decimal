@@ -8,7 +8,7 @@ evgeniy: clean
 	./evgeniy_e
 
 andrey: clean
-	$(CC) $(CFLAGS) s21*.c andrey.c -o andrey_e
+	$(CC) $(CFLAGS) -g s21*.c andrey.c -o andrey_e
 	./andrey_e
 
 gleb: clean
