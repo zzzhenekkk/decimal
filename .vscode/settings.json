@@ -1,7 +1,7 @@
 {
   "files.associations": {
     "s21_decimal.h": "c",
-    "ios": "c"
+    "bit": "c"
   },
   "C_Cpp_Runner.msvcBatchPath": "",
   "C_Cpp_Runner.cCompilerPath": "clang",

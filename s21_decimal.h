@@ -26,6 +26,7 @@ typedef struct {
   int one_right;              // первая единица справа
 } big_decimal;
 
+
 //////////////////// для работы с big_decimal //////////////////////////
 
 // приводим big_decimal к одной экспоненте
@@ -46,6 +47,9 @@ int multiply_mantis_big(big_decimal bvalue_1, big_decimal* bvalue_2,
 
 // обнуялем мантису биг децимал
 void zero_mantisa_big(big_decimal* result);
+
+// полное обнуление decimal
+void zero_big_decimal(big_decimal *result);
 
 // для приведения к одной экспоненте, домножаем на 10 биг децимал
 int multiply_10_mantis_big(big_decimal* bvalue, int def);
@@ -102,12 +106,16 @@ void div_10_big_decimal(big_decimal *dst, int n);
 // подготовка к переводу к s21_decimal
 int preparation_big_decimal(big_decimal *result, int scale);
 
-// проверяет на ноль биг децимал
-int is_zero_big_decimal (big_decimal big);
+// если big decimal = 0, то возвращает 0
+int is_zero_big_decimal(big_decimal big);
 
 // больше или равно биг дец 1 биг дец 2
 int is_greater_or_equal_big_decimal(big_decimal value_1,
                                         big_decimal value_2);
+                                        
+// деление с big_decimal
+void division(big_decimal val1, big_decimal val2, big_decimal *res);
+
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -164,5 +172,21 @@ void full_decimal(s21_decimal* num);
 
 // проверяет на ноль s21_decimal
 int is_zero_s21_decimal (s21_decimal value);
+
+
+//////////////////////////////cравнения////////////////////////////////////
+
+int s21_is_less(s21_decimal x1, s21_decimal x2);
+
+int s21_is_less_or_equal(s21_decimal x1, s21_decimal x2);
+
+int s21_is_greater(s21_decimal x1, s21_decimal x2);
+
+int s21_is_greater_or_equal(s21_decimal x1, s21_decimal x2);
+
+int s21_is_equal(s21_decimal x1, s21_decimal x2);
+
+int s21_is_not_equal(s21_decimal x1, s21_decimal x2);
+
 
 #endif  // S21_DECIMAL

@@ -1,6 +1,10 @@
 #include "s21_decimal.h"
 
 int main() {
+<<<<<<< HEAD
+=======
+
+>>>>>>> 66754125b534bb66ddfed62d8de7138c9a3b25bc
   s21_decimal val1 = {0};
   s21_decimal val2 = {0};
   s21_decimal result = {0};

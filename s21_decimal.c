@@ -13,6 +13,7 @@ void print_decimal(s21_decimal num) {
     }
     if (i != 1 && i != 2) printf("] ");
   }
+  printf("\n");
 }
 
 // инициализируем децимал
