@@ -17,7 +17,7 @@ void print_decimal(s21_decimal num) {
 
 // инициализируем децимал
 s21_decimal init_decimal(int i1, int i2, int i3, int sign, int exp) {
-  s21_decimal d;
+  s21_decimal d = {0};
   d.bits[2] = i3;
   d.bits[1] = i2;
   d.bits[0] = i1;

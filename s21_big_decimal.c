@@ -2,9 +2,10 @@
 
 // распечатаем наш decimal от 0 до 127
 void print_big_decimal(big_decimal* num) {
-  printf("\nЭкс: %d Отрц: %d", num->exponenta, num->negative);
-    printf(" Позиция 1: %d Колич нулей слев: %d",
-           num->one_position_left, num->zero_left);
+  zeroes_left_big(num);
+  printf("\nЭксонента: %d | Отриацтельное: %d |", num->exponenta, num->negative);
+    printf(" Позиция старшего бита: %d | Колич нулей слев: %d | Первая единичка справа %d",
+           num->one_position_left, num->zero_left, num->one_right);
   printf("\n");
   for (int i = 7; i >= 0; i--) {
     for (int j = 31; j >= 0; j--) {
