@@ -123,6 +123,7 @@ int go_beyond_big_decimal_s21(big_decimal* big);
 // равен ли биг дец 1 биг дец 2
 int is_equal_big_decimal(big_decimal* value_1, big_decimal* value_2);
 
+
 //////////////////////////////////////////////////////////////////////////
 
 // суммируем decimal и выводим в result
