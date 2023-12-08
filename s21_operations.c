@@ -607,7 +607,7 @@ void zeroes_left_big(big_decimal *bvalue) {
 }
 
 // деление с big_decimal
-void division(big_decimal val1, big_decimal val2, big_decimal *res) {
+void division(big_decimal val1, big_decimal val2, big_decimal *res, int mod) {
   int scale_dif = (val1.exponenta - val2.exponenta); // чисел с разными экспонентами
   int q = 0;
   big_decimal part = {0}; //вычитаемое из делителя при найденном q
@@ -616,6 +616,8 @@ void division(big_decimal val1, big_decimal val2, big_decimal *res) {
   big_decimal before_sum = {0}; // новый член в сумме
   while (is_zero_big_decimal(val1) && sum.exponenta < 31) { // остаток (val1) != нулю или exp суммы < 31 
     if (is_greater_big_decimal(val2, val1)) { // если остаток (изначально - это делимое) < делителя
+      if (mod) // если деление целочисленное
+        break;
       multiply_10_mantis_big(&val1, 1); // домнажение остатка на 10 с учетом экспоненты
       multiply_10_mantis_big(&sum, 1); // домнажение суммы на 10 с учетом экспоненты
     }
@@ -634,7 +636,7 @@ void division(big_decimal val1, big_decimal val2, big_decimal *res) {
     sum_mantissa(&sum, &before_sum, &sum); // добавление нового члена к сумме
     sub_mantis_big(val1, part, &val1); // остаток записываем в val1
   }
-  sum.exponenta += scale_dif; // учет экспоненты
+  sum.exponenta += scale_dif; // учет экспоненты (если < 0, то нужно умножить мантиссу на 10)
   *res = sum;
 
 }
