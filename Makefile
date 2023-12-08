@@ -1,7 +1,7 @@
 CC=gcc
 CFLAGS=-Wall -Werror -Wextra -std=c11
 
-all: andrey
+all: evgeniy
 
 evgeniy: clean
 	$(CC) $(CFLAGS) -g s21*.c evgeniy.c -o evgeniy_e

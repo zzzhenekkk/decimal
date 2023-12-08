@@ -105,7 +105,7 @@ void div_10_big_decimal(big_decimal* dst, int n);
 int preparation_big_decimal(big_decimal* result, int scale);
 
 // если big decimal = 0, то возвращает 0
-int is_zero_big_decimal(big_decimal big);
+int is_no_zero_big_decimal(big_decimal big);
 
 // больше или равно биг дец 1 биг дец 2
 int is_greater_or_equal_big_decimal(big_decimal value_1, big_decimal value_2);
@@ -113,9 +113,8 @@ int is_greater_or_equal_big_decimal(big_decimal value_1, big_decimal value_2);
 // деление с big_decimal
 void division(big_decimal val1, big_decimal val2, big_decimal* res);
 
-// деление big_decimal, отдает остаток
-big_decimal division_without_trace(big_decimal val1, big_decimal val2,
-                                   big_decimal* res);
+// деление с big_decimal на 10 для округления, и отнимает одну экспоненту
+big_decimal division_10(big_decimal val1, big_decimal val2, big_decimal *res);
 
 // проверка на выход биг децимал за пределы массива s21
 int go_beyond_big_decimal_s21(big_decimal* big);
@@ -123,6 +122,8 @@ int go_beyond_big_decimal_s21(big_decimal* big);
 // равен ли биг дец 1 биг дец 2
 int is_equal_big_decimal(big_decimal* value_1, big_decimal* value_2);
 
+
+void divide_by_10(big_decimal *number);
 
 //////////////////////////////////////////////////////////////////////////
 

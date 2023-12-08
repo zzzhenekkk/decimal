@@ -1,5 +1,29 @@
 #include "s21_decimal.h"
 
+void divide_by_10(big_decimal *number) {
+    unsigned int carry = 0; // переменная для хранения переноса
+    
+    for (int i = 7; i >= 0; i--) {
+        unsigned int digit = number->bits[i];
+        number->bits[i] = (digit + carry) / 10; // побитовое деление на 10
+        carry = (digit + carry) % 10; // остаток от деления
+    }
+    
+    // обновляем позицию десятичной точки
+    number->exponenta--;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 // Функции возвращают код ошибки:
 // - 0 - OK
 // - 1 - число слишком велико или равно бесконечности
@@ -65,19 +89,19 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result)
  
 
  //////проверка
-  big_decimal ten = {0};
-  ten.bits[0] = 10;
-  division_without_trace(result_b, ten, &result_b);
-  division_without_trace(result_b, ten, &result_b);
-  division_without_trace(result_b, ten, &result_b);
-  division_without_trace(result_b, ten, &result_b);
-  division_without_trace(result_b, ten, &result_b);
+  // big_decimal ten = {0};
+  // ten.bits[0] = 10;
+  // division_without_trace(result_b, ten, &result_b);
+  // division_without_trace(result_b, ten, &result_b);
+  // division_without_trace(result_b, ten, &result_b);
+  // division_without_trace(result_b, ten, &result_b);
+  // division_without_trace(result_b, ten, &result_b);
   print_big_decimal(&result_b);
  /////////////
 
 
     // переводим из биг децимал в s21
-    // status = big_to_s21decimal(result, &result_b);
+    status = big_to_s21decimal(result, &result_b);
   }
   else
   {
@@ -100,7 +124,7 @@ int big_to_s21decimal(s21_decimal *result, big_decimal *result_big) {
   big_decimal ostatok = {0};
   // делим резалт на 10 до тех пор пока 
   while (go_beyond_big_decimal_s21(result_big) && (result_big->exponenta > 0)) {
-    ostatok = division_without_trace(*result_big, ten, result_big);
+    ostatok = division_10(*result_big, ten, result_big);
     result_big->exponenta--;
     if (!go_beyond_big_decimal_s21(result_big) || !result_big->exponenta)
     {
@@ -297,7 +321,7 @@ int div_big(big_decimal value_1, big_decimal value_2, big_decimal *result)
 
   // проходимся в цикле до тех пор пока value 1 не пустой или не переберем все
   // биты
-  for (int i = 0; i < 96 && is_zero_big_decimal(value_1);)
+  for (int i = 0; i < 96 && is_no_zero_big_decimal(value_1);)
   {
     // для первого прогона это нам не нужно
     if (i > 0)
@@ -326,7 +350,7 @@ int div_big(big_decimal value_1, big_decimal value_2, big_decimal *result)
       diff = 0;
 
     // до тех пор пока разница больше 0 или value1 не пустой
-    for (; diff >= 0 && is_zero_big_decimal(value_1);)
+    for (; diff >= 0 && is_no_zero_big_decimal(value_1);)
     {
       if (is_greater_big_decimal(value_2, value_1))
       {
@@ -465,7 +489,7 @@ int is_greater_big_decimal(big_decimal value_1, big_decimal value_2)
 }
 
 // если big decimal = 0, то возвращает 0
-int is_zero_big_decimal(big_decimal big)
+int is_no_zero_big_decimal(big_decimal big)
 {
   return big.bits[0] + big.bits[1] + big.bits[2] + big.bits[3] + big.bits[4] +
          big.bits[5] + big.bits[6] + big.bits[7];
@@ -802,7 +826,7 @@ void division(big_decimal val1, big_decimal val2, big_decimal *res)
   big_decimal sum = {0};        // текущая сумма, которая должна знать ответом
   big_decimal before_sum = {0}; // новый член в сумме
 
-  while (is_zero_big_decimal(val1) && sum.exponenta < 31) { // остаток (val1) != нулю или exp суммы < 31
+  while (is_no_zero_big_decimal(val1) && sum.exponenta < 31) { // остаток (val1) != нулю или exp суммы < 31
     if (is_greater_big_decimal(val2, val1)) { // если остаток (изначально - это делимое) < делителя
       multiply_10_mantis_big(&val1, 1); // домнажение остатка на 10 с учетом экспоненты
       multiply_10_mantis_big(&sum, 1); // домнажение суммы на 10 с учетом экспоненты
@@ -828,25 +852,30 @@ void division(big_decimal val1, big_decimal val2, big_decimal *res)
   *res = sum;
 }
 
-// деление с big_decimal без остатка
-big_decimal division_without_trace(big_decimal val1, big_decimal val2, big_decimal *res){
-  int scale_dif = (val1.exponenta - val2.exponenta); // чисел с разными экспонентами
+// деление с big_decimal на 10
+big_decimal division_10(big_decimal val1, big_decimal val2, big_decimal *res)
+{
+  
+  int scale_dif = (val1.exponenta - 1); // чисел с разными экспонентами
   int q = 0;
   big_decimal part = {0};       // вычитаемое из делителя при найденном q
   big_decimal part_next = {0};  // вычитаемое из делителя при найденном q+1
   big_decimal sum = {0};        // текущая сумма, которая должна знать ответом
   big_decimal before_sum = {0}; // новый член в сумме
 
-  while (is_zero_big_decimal(val1) && sum.exponenta < 31) { // остаток (val1) != нулю или exp суммы < 31
-    if (is_greater_big_decimal(val2, val1)) { // если остаток (изначально - это делимое) < делителя
-      break;
-    }
+  while (is_no_zero_big_decimal(val1) && sum.exponenta < 31) { // остаток (val1) != нулю или exp суммы < 31
+    if (is_greater_big_decimal(val2, val1)) break;
     q = 0;
     zero_big_decimal(&part);
     zero_big_decimal(&before_sum);
     part_next = val2;
     part = val2;
+
     while (is_greater_or_equal_big_decimal(val1, part_next)) { // пока делитель(val2)*2^q < остаток
+    if ((val1.one_position_left > 5) && (q == 0)) {
+      q = val1.one_position_left - 4;
+      shift_left_big(&part_next, val1.one_position_left - 4); 
+    }
       part = part_next;
       shift_left_big(&part_next, 1); // Домнажение на 2 (формирование 2^q)
       q++;
@@ -854,12 +883,14 @@ big_decimal division_without_trace(big_decimal val1, big_decimal val2, big_decim
     q--;
     set_bit_big(&before_sum, q, 1);        // формирование нового член в сумме
     sum_mantissa(&sum, &before_sum, &sum); // добавление нового члена к сумме
-    sub_mantis_big(val1, part, &val1);     // остаток записываем в val1,
+    sub_mantis_big(val1, part, &val1);     // остаток записываем в val1
   }
+
   sum.exponenta += scale_dif; // учет экспоненты
   *res = sum;
   return val1;
 }
+
 
 // устанавливаем big_decimal по s21_decimal
 void init_big(s21_decimal value, big_decimal *big)
