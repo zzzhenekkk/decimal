@@ -607,7 +607,11 @@ void zeroes_left_big(big_decimal *bvalue) {
 }
 
 // деление с big_decimal
-void division(big_decimal val1, big_decimal val2, big_decimal *res, int mod) {
+void division(big_decimal val1, big_decimal val2, big_decimal *res) {
+  if (!is_zero_big_decimal(val2)) {
+    printf("division by zero\n");
+    return;
+  }
   int scale_dif = (val1.exponenta - val2.exponenta); // чисел с разными экспонентами
   int q = 0;
   big_decimal part = {0}; //вычитаемое из делителя при найденном q
@@ -616,8 +620,6 @@ void division(big_decimal val1, big_decimal val2, big_decimal *res, int mod) {
   big_decimal before_sum = {0}; // новый член в сумме
   while (is_zero_big_decimal(val1) && sum.exponenta < 31) { // остаток (val1) != нулю или exp суммы < 31 
     if (is_greater_big_decimal(val2, val1)) { // если остаток (изначально - это делимое) < делителя
-      if (mod) // если деление целочисленное
-        break;
       multiply_10_mantis_big(&val1, 1); // домнажение остатка на 10 с учетом экспоненты
       multiply_10_mantis_big(&sum, 1); // домнажение суммы на 10 с учетом экспоненты
     }
@@ -637,8 +639,47 @@ void division(big_decimal val1, big_decimal val2, big_decimal *res, int mod) {
     sub_mantis_big(val1, part, &val1); // остаток записываем в val1
   }
   sum.exponenta += scale_dif; // учет экспоненты (если < 0, то нужно умножить мантиссу на 10)
+  if (scale_dif < 0) {
+    multiply_10_mantis_big(&sum, -scale_dif);
+  }
   *res = sum;
 
+}
+
+big_decimal division_with_rest(big_decimal val1, big_decimal val2, big_decimal *res) {
+  if (!is_zero_big_decimal(val2)) {
+    printf("division by zero\n");
+    return val1;
+  }
+  int scale_dif = (val1.exponenta - val2.exponenta); // чисел с разными экспонентами
+  int q = 0;
+  big_decimal part = {0}; //вычитаемое из делителя при найденном q
+  big_decimal part_next = {0};  // вычитаемое из делителя при найденном q+1
+  big_decimal sum = {0}; // текущая сумма, которая должна знать ответом
+  big_decimal before_sum = {0}; // новый член в сумме
+  while (is_zero_big_decimal(val1) && sum.exponenta < 31 && is_greater_big_decimal(val1, val2)) { // остаток (val1) != нулю или exp суммы < 31 
+    q = 0;
+    zero_big_decimal(&part);
+    zero_big_decimal(&before_sum);
+    part_next = val2;
+    part = val2;
+    while (is_greater_or_equal_big_decimal(val1, part_next)) { // пока делитель(val2)*2^q < остаток
+      part = part_next;
+      shift_left_big(&part_next, 1); // Домнажение на 2 (формирование 2^q)
+      q++;
+    }
+    q--;
+    set_bit_big(&before_sum, q, 1); // формирование нового член в сумме
+    sum_mantissa(&sum, &before_sum, &sum); // добавление нового члена к сумме
+    sub_mantis_big(val1, part, &val1); // остаток записываем в val1
+  }
+  sum.exponenta += scale_dif; // учет экспоненты (если < 0, то нужно умножить мантиссу на 10)
+  if (scale_dif < 0) {
+    multiply_10_mantis_big(&sum, -scale_dif);
+  }
+  *res = sum;
+
+  return val1;
 }
 
 // устанавливаем big_decimal по s21_decimal

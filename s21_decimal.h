@@ -114,7 +114,10 @@ int is_greater_or_equal_big_decimal(big_decimal value_1,
                                         big_decimal value_2);
                                         
 // деление с big_decimal
-void division(big_decimal val1, big_decimal val2, big_decimal *res, int mod);
+void division(big_decimal val1, big_decimal val2, big_decimal *res);
+
+// деление с big_decimal с остатком
+big_decimal division_with_rest(big_decimal val1, big_decimal val2, big_decimal *res);
 
 
 //////////////////////////////////////////////////////////////////////////
