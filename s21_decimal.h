@@ -98,9 +98,6 @@ int equal_bits_big_decimal(big_decimal* value_1, big_decimal* value_2);
 // деление биг децимал
 int div_big(big_decimal value_1, big_decimal value_2, big_decimal* result);
 
-// делим на 10 биг децимал уменьшая скейл
-void div_10_big_decimal(big_decimal* dst, int n);
-
 // подготовка к переводу к s21_decimal
 int preparation_big_decimal(big_decimal* result, int scale);
 
@@ -110,20 +107,14 @@ int is_no_zero_big_decimal(big_decimal big);
 // больше или равно биг дец 1 биг дец 2
 int is_greater_or_equal_big_decimal(big_decimal value_1, big_decimal value_2);
 
-// деление с big_decimal
-void division(big_decimal val1, big_decimal val2, big_decimal* res);
-
-// деление с big_decimal на 10 для округления, и отнимает одну экспоненту
-big_decimal division_10(big_decimal val1, big_decimal val2, big_decimal *res);
-
 // проверка на выход биг децимал за пределы массива s21
 int go_beyond_big_decimal_s21(big_decimal* big);
 
 // равен ли биг дец 1 биг дец 2
 int is_equal_big_decimal(big_decimal* value_1, big_decimal* value_2);
 
-
-void divide_by_10(big_decimal *number);
+// деление с big_decimal с остатком
+big_decimal division_with_rest(big_decimal val1, big_decimal val2, big_decimal *res);
 
 //////////////////////////////////////////////////////////////////////////
 
