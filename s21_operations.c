@@ -1,29 +1,5 @@
 #include "s21_decimal.h"
 
-void divide_by_10(big_decimal *number) {
-    unsigned int carry = 0; // переменная для хранения переноса
-    
-    for (int i = 7; i >= 0; i--) {
-        unsigned int digit = number->bits[i];
-        number->bits[i] = (digit + carry) / 10; // побитовое деление на 10
-        carry = (digit + carry) % 10; // остаток от деления
-    }
-    
-    // обновляем позицию десятичной точки
-    number->exponenta--;
-}
-
-
-
-
-
-
-
-
-
-
-
-
 // Функции возвращают код ошибки:
 // - 0 - OK
 // - 1 - число слишком велико или равно бесконечности
