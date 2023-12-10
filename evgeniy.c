@@ -1,19 +1,26 @@
 #include "s21_decimal.h"
 
 int main() {
-  big_decimal a = {0};
+  // big_decimal a = {0};
   // big_decimal b = {0};
+  s21_decimal val1 = init_decimal (0xffffffff,0xffffffff,0xffffffff,0,0);
+  s21_decimal val2 = init_decimal (1,0,0,0,28);
+  s21_decimal res = init_decimal (0,0,0,0,0);
+  
+  s21_add(val1, val2, &res);
+  print_decimal(res);
+  //  full_decimal(&val1);
+  //  full_decimal(&val1);
   // big_decimal res = {0};
-  a.bits[0]= 10;
   // s21_decimal ab = {0};
   // full_decimal(&ab);
   // init_big(ab, &a);
   // a.exponenta = 3;
   // b.bits[0]= 10;
-  print_big_decimal(&a);
+  // print_big_decimal(&a);
   // print_big_decimal(&b);
-  divide_by_10(&a);
-  print_big_decimal(&a);
+
+  // print_big_decimal(&a);
 
   // s21_decimal val1 = {0};
   // s21_decimal val2 = {0};

@@ -95,11 +95,11 @@ int is_greater_big_decimal(big_decimal value_1, big_decimal value_2);
 // уравнивание биг децимал
 int equal_bits_big_decimal(big_decimal* value_1, big_decimal* value_2);
 
-// деление биг децимал
-int div_big(big_decimal value_1, big_decimal value_2, big_decimal* result);
+// // деление биг децимал
+// int div_big(big_decimal value_1, big_decimal value_2, big_decimal* result);
 
-// подготовка к переводу к s21_decimal
-int preparation_big_decimal(big_decimal* result, int scale);
+// // подготовка к переводу к s21_decimal
+// int preparation_big_decimal(big_decimal* result, int scale);
 
 // если big decimal = 0, то возвращает 0
 int is_no_zero_big_decimal(big_decimal big);
