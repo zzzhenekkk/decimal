@@ -163,6 +163,9 @@ int get_sign(s21_decimal num);
 // перевести из int в decimal (всегда успешно)
 int s21_from_int_to_decimal(int src, s21_decimal* dst);
 
+// перевести из decimal в int 
+int s21_from_decimal_to_int(s21_decimal src, int *dst);
+
 // считает и возвращает количество нулей слева по мантиссе, чтобы проверять,
 // можно ли реализовать сдвиг
 int zeroes_left(s21_decimal value);
