@@ -119,6 +119,17 @@ void division(big_decimal val1, big_decimal val2, big_decimal *res);
 // деление с big_decimal с остатком
 big_decimal division_with_rest(big_decimal val1, big_decimal val2, big_decimal *res);
 
+// деление биг децимал c остатком на 10 для удобства
+unsigned int division_with_rest_for10(big_decimal val1, big_decimal *res);
+
+// деление биг децимал c остатком на 10 для удобства
+int go_beyond_big_decimal_s21(big_decimal *big);
+
+// переводим из бига в s21
+int big_to_s21decimal(s21_decimal *result, big_decimal *result_big);
+
+// равен ли биг дец 1 биг дец 2
+int is_equal_big_decimal(big_decimal *value_1, big_decimal *value_2);
 
 //////////////////////////////////////////////////////////////////////////
 
