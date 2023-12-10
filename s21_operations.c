@@ -25,9 +25,11 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result)
     big_decimal result_b = {0};
     // print_decimal(*result);
 
+    // нормализуем все в сторону большей степени
     normalize_big(&bvalue_1, &bvalue_2);
     // print_big_decimal(&bvalue_1);
     // print_big_decimal(&bvalue_2);
+
     // равные ли у нас знаки
     if (get_sign(value_1) == get_sign(value_2))
       equal_signs = 1;
@@ -60,7 +62,7 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result)
     // print_big_decimal(&bvalue_2);
     // print_big_decimal(&bvalue_1);
     // print_big_decimal(&bvalue_2);
-    print_big_decimal(&result_b);
+    // print_big_decimal(&result_b);
     
  
 
@@ -72,7 +74,7 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result)
   // division_without_trace(result_b, ten, &result_b);
   // division_without_trace(result_b, ten, &result_b);
   // division_without_trace(result_b, ten, &result_b);
-  print_big_decimal(&result_b);
+  // print_big_decimal(&result_b);
  /////////////
 
 
@@ -86,6 +88,13 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result)
   return status;
 }
 
+
+// Функции возвращают код ошибки:
+// - 0 - OK
+// - 1 - число слишком велико или равно бесконечности
+// - 2 - число слишком мало или равно отрицательной бесконечности
+// - 3 - деление на 0
+
 // переводим из бига в s21
 int big_to_s21decimal(s21_decimal *result, big_decimal *result_big) {
   int status = 0;
@@ -93,34 +102,57 @@ int big_to_s21decimal(s21_decimal *result, big_decimal *result_big) {
   zeroes_left_big(result_big);
   big_decimal ten = {0};
   ten.bits[0] = 10;
-  big_decimal five = {0};
-  five.bits[0] = 5;
+  // big_decimal five = {0};
+  // five.bits[0] = 5;
   big_decimal one = {0};
   one.bits[0] = 1;
-  big_decimal ostatok = {0};
-  // делим резалт на 10 до тех пор пока 
-  while (go_beyond_big_decimal_s21(result_big) && (result_big->exponenta > 0)) {
-    ostatok = division_10(*result_big, ten, result_big);
-    result_big->exponenta--;
-    if (!go_beyond_big_decimal_s21(result_big) || !result_big->exponenta)
-    {
-      // здесь нужно написать банковское округление и прочую чепушню
-      // (если ostatok > 5) то в result_big прибавляем 1
-      if (is_greater_big_decimal(ostatok, five))
-        sum_mantissa(result_big, &one, result_big);
+  // big_decimal ostatok = {0};
+  unsigned int ostatok = 0;
 
-      // (если ostatok = 5) то смотрим на первый бит в result и если 1, то в
-      // резалт добавляем 1
-      if (is_equal_big_decimal(&ostatok, &five))
+  // если мантиса бига выходит за пределы обычной, то
+  if (go_beyond_big_decimal_s21(result_big)) {
+      if (result_big->exponenta < 1) status = 1;
+  } else {
+  // делим резалт на 10 до тех пор пока 
+    while (go_beyond_big_decimal_s21(result_big) && (result_big->exponenta > 0)) {
+      ostatok = division_with_rest_for10(*result_big, result_big);
+
+      if (!result_big->exponenta || !go_beyond_big_decimal_s21(result_big))
       {
-        if (get_bit_big(result_big, 0))
+        // здесь нужно написать банковское округление и прочую чепушню
+        // (если ostatok > 5) то в result_big прибавляем 1
+        if (ostatok > 5)
           sum_mantissa(result_big, &one, result_big);
+
+        // (если ostatok = 5) то смотрим на первый бит в result и если 1, то в
+        // резалт добавляем 1
+        if (ostatok == 5)
+        {
+          if (get_bit_big(result_big, 0))
+            sum_mantissa(result_big, &one, result_big);
+        }
       }
     }
   }
+
+  // для очень маленьких чисел, если экспонента очень большая
+  while (result_big->exponenta > 28) {
+    // 
+    if (compare_mantis_big(result_big, &ten) >= 0) {
+
+    } else {
+      status = 2;
+      break;
+    }
+  }
+
+
+
+  // если все равно выходит за пределы мантисы
   if (go_beyond_big_decimal_s21(result_big))
     status = 1;
 
+  
   if ((status == 1) && result_big->negative)
     status = 2;
   
@@ -374,44 +406,6 @@ int preparation_big_decimal(big_decimal *result, int scale)
   return scale;
 }
 
-// делим на 10 биг децимал уменьшая скейл
-void div_10_big_decimal(big_decimal *dst, int n)
-{
-  big_decimal tmp = {0};
-  s21_decimal ten_s = {0};
-  s21_from_int_to_decimal(10, &ten_s);
-  big_decimal ten = {0};
-  init_big(ten_s, &ten);
-
-  for (int i = 0; i < n; i++)
-  {
-    div_big(*dst, ten, &tmp);
-    *dst = tmp;
-    zero_mantisa_big(&tmp);
-  }
-}
-
-// уравнивание биг децимал
-int equal_bits_big_decimal(big_decimal *value_1, big_decimal *value_2)
-{
-  int scale = 0;
-
-  // до тех пор пока value 2 больше value 1, домножаем value_1
-  while (is_greater_big_decimal(*value_2, *value_1))
-  {
-    multiply_10_mantis_big_w_e(value_1, 1);
-    scale++;
-  }
-
-  // до тех пор пока больше или равно value_1 value_2
-  while (is_greater_or_equal_big_decimal(*value_1, *value_2))
-  {
-    shift_left_big(value_2, 1);
-  }
-  shift_right_big(value_2, 1);
-  return scale;
-}
-
 // больше или равно биг дец 1 биг дец 2
 int is_greater_or_equal_big_decimal(big_decimal value_1, big_decimal value_2)
 {
@@ -497,29 +491,6 @@ int is_zero_s21_decimal(s21_decimal value)
   res = value.bits[0] + value.bits[1] + value.bits[2];
   return res;
 }
-
-// // если есть возможность, снижаем экспоненту
-// void normalize_big(big_decimal *bvalue_1, big_decimal *bvalue_2) {
-//   int def = bvalue_1->exponenta - bvalue_2->exponenta;
-//   if (def > 0) {
-//     multiply_10_mantis_big(bvalue_2, def);
-//     zeroes_left_big(bvalue_2);
-//   } else if (def < 0) {
-//     multiply_10_mantis_big(bvalue_1, def);
-//     zeroes_left_big(bvalue_1);
-//   }
-// }
-
-// // деление мантис биг децимала
-// int div_mantis_big(big_decimal *value_1, big_decimal *value_2,
-//                     big_decimal *result) {
-//     int status = 0;
-//     while (1) {
-
-//     }
-
-//   return status;
-// }
 
 // вычитание в формате большого децимала
 void sub_mantis_big(big_decimal value_1, big_decimal value_2,
@@ -888,45 +859,50 @@ big_decimal division_with_rest(big_decimal val1, big_decimal val2, big_decimal *
   return val1;
 }
 
-// деление с big_decimal на 10
-big_decimal division_10(big_decimal val1, big_decimal val2, big_decimal *res)
-{
-  
-  int scale_dif = (val1.exponenta - 1); // чисел с разными экспонентами
+// деление биг децимал c остатком на 10 для удобства
+unsigned int division_with_rest_for10(big_decimal val1, big_decimal *res) {
+  big_decimal val2 = {0};
+  val2.bits[0]= 10;
+  // int scale_dif = (val1.exponenta - val2.exponenta); // чисел с разными экспонентами
   int q = 0;
-  big_decimal part = {0};       // вычитаемое из делителя при найденном q
+  big_decimal part = {0}; //вычитаемое из делителя при найденном q
   big_decimal part_next = {0};  // вычитаемое из делителя при найденном q+1
-  big_decimal sum = {0};        // текущая сумма, которая должна знать ответом
+  big_decimal sum = {0}; // текущая сумма, которая должна знать ответом
   big_decimal before_sum = {0}; // новый член в сумме
-
-  while (is_no_zero_big_decimal(val1) && sum.exponenta < 31) { // остаток (val1) != нулю или exp суммы < 31
-    if (is_greater_big_decimal(val2, val1)) break;
+  // normalize_big(&val1, &val2);
+  while (is_zero_big_decimal(val1) && is_greater_or_equal_big_decimal(val1, val2)) { // остаток (val1) != нулю или exp суммы < 31 
     q = 0;
     zero_big_decimal(&part);
     zero_big_decimal(&before_sum);
     part_next = val2;
     part = val2;
-
+    zeroes_left_big(&val1);
     while (is_greater_or_equal_big_decimal(val1, part_next)) { // пока делитель(val2)*2^q < остаток
-    if ((val1.one_position_left > 5) && (q == 0)) {
-      q = val1.one_position_left - 4;
-      shift_left_big(&part_next, val1.one_position_left - 4); 
-    }
+      if (q == 0)  {
+        int difference_elder_bit = val1.one_position_left - val2.one_position_left;
+        if (difference_elder_bit > 2) {
+          q = difference_elder_bit - 2;
+          shift_left_big(&part_next, q);
+        }
+      }
       part = part_next;
       shift_left_big(&part_next, 1); // Домнажение на 2 (формирование 2^q)
       q++;
     }
     q--;
-    set_bit_big(&before_sum, q, 1);        // формирование нового член в сумме
+    set_bit_big(&before_sum, q, 1); // формирование нового членa в сумме
     sum_mantissa(&sum, &before_sum, &sum); // добавление нового члена к сумме
-    sub_mantis_big(val1, part, &val1);     // остаток записываем в val1
+    if (is_greater_or_equal_big_decimal(val1, part))
+      sub_mantis_big(val1, part, &val1); // остаток записываем в val1
   }
-
-  sum.exponenta += scale_dif; // учет экспоненты
+  // sum.exponenta += scale_dif; // учет экспоненты (если < 0, то нужно умножить мантиссу на 10)
+  // if (scale_dif < 0) {
+  //   multiply_10_mantis_big(&sum, -scale_dif);
+  // }
+  sum.exponenta = val1.exponenta - 1;
   *res = sum;
-  return val1;
+  return val1.bits[0];
 }
-
 
 // устанавливаем big_decimal по s21_decimal
 void init_big(s21_decimal value, big_decimal *big)
