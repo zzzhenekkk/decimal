@@ -50,6 +50,9 @@ int main() {
 
   /* test convertation*/
   dec1 = init_decimal(0x80000000, 1, 0, 1, 0);
+  s21_decimal dec2 = {0};
+  short_div(dec1, init_decimal(10,0,0,0,0), &dec2);
+  print_decimal(dec2);
   int a, code;
   code = s21_from_decimal_to_int(dec1, &a);
   printf("код выполнения: %d\t %d \n", a, code);
