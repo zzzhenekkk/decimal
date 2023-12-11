@@ -205,5 +205,8 @@ int s21_is_equal(s21_decimal x1, s21_decimal x2);
 
 int s21_is_not_equal(s21_decimal x1, s21_decimal x2);
 
+// поменять знак у s21_decimal
+void change_znak_s21(s21_decimal * value);
+
 
 #endif  // S21_DECIMAL
