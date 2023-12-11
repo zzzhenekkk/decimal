@@ -12,6 +12,17 @@
 #define BITS_S21 95
 #define BITS_B 8
 
+#define S21_OK 0
+#define S21_ERROR 1
+#define S21_ERROR_TOO_BIG 1
+#define S21_ERROR_TOO_SMALL 2
+#define S21_ERROR_ZERO_DIVISION 3
+
+#define S21_FALSE 0
+#define S21_TRUE 1
+#define S21_MINUS 0b10000000000000000000000000000000
+#define S21_PLUS 0b00000000000000000000000000000000
+
 typedef struct {
   unsigned int bits[4];
 } s21_decimal;
