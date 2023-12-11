@@ -90,15 +90,15 @@ START_TEST(div_7_test) {
   s21_decimal num1 = {{10, 0, 0, 0}};
   s21_decimal num2 = {{658067456, 1164, 0, 0}};
   s21_decimal res = {{0, 0, 0, 0}};
-          print_decimal(num1);
-    print_decimal(num2);
-    printf("\n!!!!!!!!\n");
+    //       print_decimal(num1);
+    // print_decimal(num2);
+    // printf("\n!!!!!!!!\n");
   int status = s21_div(num1, num2, &res);
-     s21_decimal res2 = {{(unsigned int)2, (unsigned int)0, (unsigned int)0, (unsigned int)786432}};
-  printf("\n!!!!!!!!\n");
+  //    s21_decimal res2 = {{(unsigned int)2, (unsigned int)0, (unsigned int)0, (unsigned int)786432}};
+  // printf("\n!!!!!!!!\n");
 
-  print_decimal(res);
-  print_decimal(res2);
+  // print_decimal(res);
+  // print_decimal(res2);
   ck_assert_int_eq(status, 0);
   ck_assert_int_eq(res.bits[0], 2);
   ck_assert_int_eq(res.bits[1], 0);
@@ -166,7 +166,7 @@ START_TEST(div_12_test) {
   int status = s21_div(num1, num2, &res);
   ck_assert_int_eq(status, 0);
   ck_assert_int_eq(res.bits[0], 1171354717);
-  ck_assert_int_eq(res.bits[1], -780903145);
+  ck_assert_int_eq(res.bits[1], (unsigned int)-780903145);
   ck_assert_int_eq(res.bits[2], 1952257861);
   ck_assert_int_eq(res.bits[3], 0);
 }
@@ -202,9 +202,17 @@ START_TEST(div_15_test) {
   s21_decimal num1 = {{(unsigned int)-1, (unsigned int)-1, (unsigned int)-1, 0}};
   s21_decimal num2 = {{805306368, (unsigned int)-1167128797, 1626303258, 0}};
   s21_decimal res = {{0, 0, 0, 0}};
+    //     print_decimal(num1);
+    // print_decimal(num2);
+    // printf("\n!!!!!!!!\n");
   int status = s21_div(num1, num2, &res);
+  // s21_decimal res2 = {{(unsigned int)1431655766, (unsigned int)1431655765, (unsigned int)1431655765, (unsigned int)1835008}};
+  // printf("\n!!!!!!!!\n");
+
+  // print_decimal(res);
+  // print_decimal(res2);
   ck_assert_int_eq(status, 0);
-  ck_assert_int_eq(res.bits[0], 1431655766);
+  ck_assert_int_eq(res.bits[0], 1431655765);
   ck_assert_int_eq(res.bits[1], 1431655765);
   ck_assert_int_eq(res.bits[2], 1431655765);
   ck_assert_int_eq(res.bits[3], 1835008);

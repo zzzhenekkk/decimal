@@ -346,7 +346,7 @@ int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
 
       // устанавливаем знак в результат
       if (get_sign(value_1) != get_sign(value_2)) b_result.negative = 1;
-      print_big_decimal(&b_result);
+      // print_big_decimal(&b_result);
       if (!status) status = big_to_s21decimal(result, &b_result);
 
     } else {
@@ -792,7 +792,7 @@ void division(big_decimal val1, big_decimal val2, big_decimal *res) {
   big_decimal sum = {0}; // текущая сумма, которая должна знать ответом
   big_decimal before_sum = {0}; // новый член в сумме
   while (is_zero_big_decimal(val1) && sum.exponenta < 31) { // остаток (val1) != нулю или exp суммы < 31 
-    if (is_greater_big_decimal(val2, val1)) { // если остаток (изначально - это делимое) < делителя
+    while (is_greater_big_decimal(val2, val1)) { // если остаток (изначально - это делимое) < делителя
       multiply_10_mantis_big(&val1, 1); // домнажение остатка на 10 с учетом экспоненты
       multiply_10_mantis_big(&sum, 1); // домнажение суммы на 10 с учетом экспоненты
     }

@@ -20,7 +20,7 @@ int main() {
   // suite_add_tcase(suite, tests_s21_truncate());
   // suite_add_tcase(suite, tests_s21_floor());
   // suite_add_tcase(suite, tests_s21_round());
-  // suite_add_tcase(suite, tests_s21_comparison());
+  suite_add_tcase(suite, tests_s21_comparison());
 
   srunner_set_fork_status(srunner, CK_NOFORK);
   srunner_run_all(srunner, CK_VERBOSE);
