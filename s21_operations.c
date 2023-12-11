@@ -47,11 +47,12 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
 
     // дописываем экспоненту
     result_b.exponenta = bvalue_1.exponenta;
+    // print_big_decimal(&result_b);
     // записываем из биг децимал в обычный s21
     status = big_to_s21decimal(result, &result_b);
 
   } else {
-    status = -1;
+    status = 1;
   }
   return status;
 }
@@ -192,7 +193,10 @@ unsigned int division_with_rest_for10(big_decimal val1, big_decimal *res) {
     
   }
 
+  // устанавливаем экспоненту
   sum.exponenta = val1.exponenta - 1;
+  // устанавливаем знак
+  sum.negative = val1.negative;
   *res = sum;
   return val1.bits[0];
 }
@@ -242,11 +246,11 @@ int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
     // дописываем экспоненту
     result_b.exponenta = bvalue_1.exponenta;
     // записываем из биг децимал в обычный s21
-    print_big_decimal(&result_b);
+    // print_big_decimal(&result_b);
     status = big_to_s21decimal(result, &result_b);
 
   } else {
-    status = -1;
+    status = 1;
   }
   return status;
 }
@@ -276,8 +280,7 @@ int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
 
     if (multiply_mantis_big(bvalue_1, &bvalue_2, &result_b)) status = 1;
 
-    // дописываем экспоненту
-    result_b.exponenta = bvalue_1.exponenta + bvalue_2.exponenta;
+    
     // дописываем знак
     if (equal_signs) {
       result_b.negative = 0;
@@ -297,7 +300,7 @@ int s21_mul(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
     if (!status) status = big_to_s21decimal(result, &result_b);
 
   } else {
-    status = -1;
+    status = 1;
   }
   return status;
 }
@@ -343,7 +346,7 @@ int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
 
       // устанавливаем знак в результат
       if (get_sign(value_1) != get_sign(value_2)) b_result.negative = 1;
-
+      print_big_decimal(&b_result);
       if (!status) status = big_to_s21decimal(result, &b_result);
 
     } else {
@@ -351,7 +354,7 @@ int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
     }
     if (status || zero1) zero_s21_decimal(result);
   } else {
-    status = -1;
+    status = 1;
   }
   return status;
 }
@@ -677,6 +680,12 @@ int multiply_mantis_big(big_decimal bvalue_1, big_decimal *bvalue_2,
     if (get_bit_big(bvalue_2, i))
       if (sum_mantissa(result, &bvalue_1, result)) status = 1;
   }
+
+  int equal_znak = (bvalue_1.negative == bvalue_2->negative);
+  if (!equal_znak) result->negative = 1;
+
+  // дописываем экспоненту
+    result->exponenta = bvalue_1.exponenta + bvalue_2->exponenta;
 
   return status;
 }
