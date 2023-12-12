@@ -18,7 +18,7 @@ START_TEST(not_equal_dif_exp) {
 END_TEST
 
 START_TEST(not_equal_dif_sign) {
-  s21_decimal val1 = {{0, 0, 1, -65536}};
+  s21_decimal val1 = {{0, 0, 1, (unsigned int)-65536}};
   s21_decimal val2 = {{0, 0, 1, 65536}};
 
   ck_assert_int_eq(s21_is_not_equal(val1, val2), 1);
@@ -34,7 +34,7 @@ START_TEST(not_equal_dif_mantissa) {
 END_TEST
 
 START_TEST(not_equal_neg_zero) {
-  s21_decimal val1 = {{0, 0, 0, -2147483648}};
+  s21_decimal val1 = {{0, 0, 0, (unsigned int)-2147483648}};
   s21_decimal val2 = {{0, 0, 0, 0}};
 
   ck_assert_int_eq(s21_is_not_equal(val1, val2), 0);
@@ -60,7 +60,7 @@ START_TEST(equal_dif_exp) {
 END_TEST
 
 START_TEST(equal_dif_sign) {
-  s21_decimal val1 = {{0, 0, 1, -65536}};
+  s21_decimal val1 = {{0, 0, 1, (unsigned int)-65536}};
   s21_decimal val2 = {{0, 0, 1, 65536}};
 
   ck_assert_int_eq(s21_is_equal(val1, val2), 0);
@@ -76,7 +76,7 @@ START_TEST(equal_dif_mantissa) {
 END_TEST
 
 START_TEST(equal_neg_zero) {
-  s21_decimal val1 = {{0, 0, 0, -2147483648}};  // -0
+  s21_decimal val1 = {{0, 0, 0, (unsigned int)-2147483648}};  // -0
   s21_decimal val2 = {{0, 0, 0, 0}};            // 0
 
   ck_assert_int_eq(s21_is_equal(val1, val2), 1);
@@ -84,8 +84,8 @@ START_TEST(equal_neg_zero) {
 END_TEST
 
 START_TEST(equal_neg_zero_2) {
-  s21_decimal val1 = {{0, 0, 0, -2147483648}};
-  s21_decimal val2 = {{0, 0, 0, -2147483648}};
+  s21_decimal val1 = {{0, 0, 0, (unsigned int)-2147483648}};
+  s21_decimal val2 = {{0, 0, 0, (unsigned int)-2147483648}};
 
   ck_assert_int_eq(s21_is_equal(val1, val2), 1);
 }
@@ -110,7 +110,7 @@ START_TEST(less_dif_exp) {
 END_TEST
 
 START_TEST(less_dif_sign) {
-  s21_decimal val1 = {{0, 0, 1, -65536}};
+  s21_decimal val1 = {{0, 0, 1, (unsigned int)-65536}};
   s21_decimal val2 = {{0, 0, 1, 65536}};
 
   ck_assert_int_eq(s21_is_less(val1, val2), 1);
@@ -164,8 +164,8 @@ START_TEST(less_dif_neg_float) {
 END_TEST
 
 START_TEST(less_eq_neg_num) {
-  s21_decimal val1 = {{123, 0, 0, -2147483648}};
-  s21_decimal val2 = {{123, 0, 0, -2147483648}};
+  s21_decimal val1 = {{123, 0, 0, (unsigned int)-2147483648}};
+  s21_decimal val2 = {{123, 0, 0, (unsigned int)-2147483648}};
 
   ck_assert_int_eq(s21_is_less(val1, val2), 0);
 }
@@ -180,7 +180,7 @@ START_TEST(less_eq_num) {
 END_TEST
 
 START_TEST(less_neg_zero) {
-  s21_decimal val1 = {{0, 0, 0, -2147483648}};
+  s21_decimal val1 = {{0, 0, 0, (unsigned int)-2147483648}};
   s21_decimal val2 = {{0, 0, 0, 0}};
 
   ck_assert_int_eq(s21_is_less(val1, val2), 0);
@@ -188,8 +188,8 @@ START_TEST(less_neg_zero) {
 END_TEST
 
 START_TEST(less_neg_zero_2) {
-  s21_decimal val1 = {{0, 0, 0, -2147483648}};
-  s21_decimal val2 = {{0, 0, 0, -2147483648}};
+  s21_decimal val1 = {{0, 0, 0, (unsigned int)-2147483648}};
+  s21_decimal val2 = {{0, 0, 0, (unsigned int)-2147483648}};
 
   ck_assert_int_eq(s21_is_less(val1, val2), 0);
 }
@@ -214,7 +214,7 @@ START_TEST(less_or_eq_dif_exp) {
 END_TEST
 
 START_TEST(less_or_eq_dif_sign) {
-  s21_decimal val1 = {{0, 0, 1, -65536}};
+  s21_decimal val1 = {{0, 0, 1, (unsigned int)-65536}};
   s21_decimal val2 = {{0, 0, 1, 65536}};
 
   ck_assert_int_eq(s21_is_less_or_equal(val1, val2), 1);
@@ -248,7 +248,7 @@ START_TEST(greater_or_eq_dif_exp) {
 END_TEST
 
 START_TEST(greater_or_eq_dif_sign) {
-  s21_decimal val1 = {{0, 0, 1, -65536}};
+  s21_decimal val1 = {{0, 0, 1, (unsigned int)-65536}};
   s21_decimal val2 = {{0, 0, 1, 65536}};
 
   ck_assert_int_eq(s21_is_greater_or_equal(val1, val2), 0);
@@ -282,7 +282,7 @@ START_TEST(greater_dif_exp) {
 END_TEST
 
 START_TEST(greater_dif_sign) {
-  s21_decimal val1 = {{0, 0, 1, -65536}};
+  s21_decimal val1 = {{0, 0, 1, (unsigned int)-65536}};
   s21_decimal val2 = {{0, 0, 1, 65536}};
 
   ck_assert_int_eq(s21_is_greater(val1, val2), 0);
@@ -336,8 +336,8 @@ START_TEST(greater_dif_neg_float) {
 END_TEST
 
 START_TEST(greater_eq_neg_num) {
-  s21_decimal val1 = {{123, 0, 0, -2147483648}};
-  s21_decimal val2 = {{123, 0, 0, -2147483648}};
+  s21_decimal val1 = {{123, 0, 0, (unsigned int)-2147483648}};
+  s21_decimal val2 = {{123, 0, 0, (unsigned int)-2147483648}};
 
   ck_assert_int_eq(s21_is_greater(val1, val2), 0);
 }
@@ -352,7 +352,7 @@ START_TEST(greater_eq_num) {
 END_TEST
 
 START_TEST(greater_neg_zero) {
-  s21_decimal val1 = {{0, 0, 0, -2147483648}};
+  s21_decimal val1 = {{0, 0, 0, (unsigned int)-2147483648}};
   s21_decimal val2 = {{0, 0, 0, 0}};
 
   ck_assert_int_eq(s21_is_greater(val1, val2), 0);
@@ -360,8 +360,8 @@ START_TEST(greater_neg_zero) {
 END_TEST
 
 START_TEST(greater_neg_zero_2) {
-  s21_decimal val1 = {{0, 0, 0, -2147483648}};
-  s21_decimal val2 = {{0, 0, 0, -2147483648}};
+  s21_decimal val1 = {{0, 0, 0, (unsigned int)-2147483648}};
+  s21_decimal val2 = {{0, 0, 0, (unsigned int)-2147483648}};
 
   ck_assert_int_eq(s21_is_greater(val1, val2), 0);
 }
