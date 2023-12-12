@@ -11,15 +11,15 @@ int main() {
   // suite_add_tcase(suite, tests_s21_decimal_to_int());
   // suite_add_tcase(suite, tests_s21_float_to_decimal());
   // suite_add_tcase(suite, tests_s21_decimal_to_float());
-  // suite_add_tcase(suite, tests_s21_negate());
+  suite_add_tcase(suite, tests_s21_negate());
   suite_add_tcase(suite, tests_s21_add());
   suite_add_tcase(suite, tests_s21_sub());
   suite_add_tcase(suite, tests_s21_mul());
   suite_add_tcase(suite, tests_s21_div());
   // suite_add_tcase(suite, tests_s21_mod());
-  // suite_add_tcase(suite, tests_s21_truncate());
-  // suite_add_tcase(suite, tests_s21_floor());
-  // suite_add_tcase(suite, tests_s21_round());
+  suite_add_tcase(suite, tests_s21_truncate());
+  suite_add_tcase(suite, tests_s21_floor());
+  suite_add_tcase(suite, tests_s21_round());
   suite_add_tcase(suite, tests_s21_comparison());
 
   srunner_set_fork_status(srunner, CK_NOFORK);

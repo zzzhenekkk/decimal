@@ -45,11 +45,17 @@ START_TEST(test_s21_truncate_3) {
   src1.bits[1] = 0;
   src1.bits[2] = 0;
   src1.bits[3] = 0b10000000000001010000000000000000;
+    print_decimal(src1);
+    
+    printf("\n!!!!!!!!\n");
   int val = s21_truncate(src1, &result_our);
   result_origin.bits[0] = 0;
   result_origin.bits[1] = 0;
   result_origin.bits[2] = 0;
   result_origin.bits[3] = 0;
+    printf("\n%d", val);
+   print_decimal(result_our);
+  print_decimal(result_origin);
   ck_assert_int_eq(result_origin.bits[0], result_our.bits[0]);
   ck_assert_int_eq(result_origin.bits[1], result_our.bits[1]);
   ck_assert_int_eq(result_origin.bits[2], result_our.bits[2]);
