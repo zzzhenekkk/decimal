@@ -53,3 +53,97 @@ int s21_from_decimal_to_int(s21_decimal src, int *dst) {
     }
     return res;
 }
+
+//Возвращаемое значение - код ошибки:
+//  - 0 - OK
+//  - 1 - ошибка конвертации
+
+int s21_from_float_to_decimal(float src, s21_decimal *dst) {
+  int status = S21_OK;
+
+  if (dst) {
+    zero_s21_decimal(dst);
+  } else {
+    status = S21_ERROR;
+  }
+
+
+  if (status || (0 < fabsf(src) && fabsf(src) < 1e-28) || isnan(src) ||
+      isinf(src) || 79228162514264337593543950335.f < src) {
+    status = S21_ERROR;
+  } else {
+    char part[128] = {0};
+    int scale = 0;
+    int decimal_part = 0;
+    int length = 0;
+
+    // переводим из float в строку
+    sprintf(part, "%.7g", src);
+    printf("!!!%s!!!", part);
+    s21_get_float_part(part, &scale, &length, &decimal_part);
+
+    if (scale < 0 && 28 < abs(scale) + length) {
+      memset(part, 0, 128);
+      sprintf(part, "%.*g", 29 - abs(scale), src);
+      s21_get_float_part(part, &scale, &length, &decimal_part);
+    }
+
+    int number = abs(atoi(part));
+    for (int i = 0; i < length; ++i) {
+      number *= 10;
+    }
+    number += decimal_part;
+    
+    // устанавливаем минус
+    if (src < 0) {
+      set_minus(dst, 1);
+    }
+
+    // устанавливаем экспоненту
+    if (scale < 0) {
+      set_scale(dst, abs(scale) + length);
+    } else if (!scale) {
+      set_scale(dst, length);
+    }
+
+    for (int i = 0; number; ++i, number /= 2) {
+      if (number % 2) {
+        set_bit(dst, i, 1);
+      }
+    }
+
+    // 
+    if (0 < scale - length) {
+      s21_decimal s21_mul_by_10 = {{10, 0, 0, 0}};
+      for (int i = 0; !status && i < scale - length; ++i) {
+        status = s21_mul(*dst, s21_mul_by_10, dst);
+      }
+    }
+  }
+
+  return status;
+}
+
+
+void s21_get_float_part(char *part, int *scale, int *length,
+                        int *decimal_part) {
+  // ищем позицию точки
+  char *dot = strchr(part, '.');
+  // ищем позицию e
+  char *exponenta = strchr(part, 'e');
+
+  *scale = 0;
+  *decimal_part = 0;
+  *length = 0;
+
+  if (exponenta) {
+    *exponenta++ = '\0';
+    *scale = atoi(exponenta);
+  }
+
+  if (dot) {
+    *dot++ = '\0';
+    *length = strlen(dot);
+    *decimal_part = atoi(dot);
+  }
+}

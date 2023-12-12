@@ -6,6 +6,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
+
 
 // количество битов большого массива
 #define BITS_BIG 255
@@ -231,5 +233,10 @@ int s21_round(s21_decimal value, s21_decimal *result);
 // Округляет указанное Decimal число до ближайшего целого числа в сторону отрицательной бесконечности.
 int s21_floor(s21_decimal value, s21_decimal *result);
 
+// Из float to децимал
+int s21_from_float_to_decimal(float src, s21_decimal *dst);
+
+void s21_get_float_part(char *part, int *scale, int *length,
+                        int *decimal_part);
 
 #endif  // S21_DECIMAL
