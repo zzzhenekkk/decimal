@@ -934,7 +934,7 @@ int s21_round(s21_decimal value, s21_decimal *result) {
 
     // получение 1/2
     s21_div(s21_one, s21_half, &s21_half);
-    print_decimal(s21_half);
+    // print_decimal(s21_half);
 
     // убираем знак
     set_minus(&value, 0);
