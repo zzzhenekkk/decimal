@@ -6,11 +6,24 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
+
 
 // количество битов большого массива
 #define BITS_BIG 255
 #define BITS_S21 95
 #define BITS_B 8
+
+#define S21_OK 0
+#define S21_ERROR 1
+#define S21_ERROR_TOO_BIG 1
+#define S21_ERROR_TOO_SMALL 2
+#define S21_ERROR_ZERO_DIVISION 3
+
+#define S21_FALSE 0
+#define S21_TRUE 1
+#define S21_MINUS 0b10000000000000000000000000000000
+#define S21_PLUS 0b00000000000000000000000000000000
 
 typedef struct {
   unsigned int bits[4];
@@ -119,6 +132,17 @@ void division(big_decimal val1, big_decimal val2, big_decimal *res);
 // деление с big_decimal с остатком
 big_decimal division_with_rest(big_decimal val1, big_decimal val2, big_decimal *res);
 
+// деление биг децимал c остатком на 10 для удобства
+unsigned int division_with_rest_for10(big_decimal val1, big_decimal *res);
+
+// деление биг децимал c остатком на 10 для удобства
+int go_beyond_big_decimal_s21(big_decimal *big);
+
+// переводим из бига в s21
+int big_to_s21decimal(s21_decimal *result, big_decimal *result_big);
+
+// равен ли биг дец 1 биг дец 2
+int is_equal_big_decimal(big_decimal *value_1, big_decimal *value_2);
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -197,5 +221,28 @@ int s21_is_equal(s21_decimal x1, s21_decimal x2);
 
 int s21_is_not_equal(s21_decimal x1, s21_decimal x2);
 
+// поменять знак у s21_decimal
+void change_znak_s21(s21_decimal * value);
+
+// Возвращает результат умножения указанного Decimal на -1.
+int s21_negate(s21_decimal value, s21_decimal *result);
+
+// Возвращает целые цифры указанного Decimal числа; любые дробные цифры отбрасываются, включая конечные нули
+int s21_truncate(s21_decimal value, s21_decimal *result);
+
+// Округляет Decimal до ближайшего целого числа.
+int s21_round(s21_decimal value, s21_decimal *result);
+
+// Округляет указанное Decimal число до ближайшего целого числа в сторону отрицательной бесконечности.
+int s21_floor(s21_decimal value, s21_decimal *result);
+
+// Из float to децимал
+int s21_from_float_to_decimal(float src, s21_decimal *dst);
+
+void s21_get_float_part(char *part, int *scale, int *length,
+                        int *decimal_part);
+
+// перевод из децимал ту флоат
+int s21_from_decimal_to_float(s21_decimal src, float *dst);
 
 #endif  // S21_DECIMAL
