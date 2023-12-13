@@ -1,8 +1,9 @@
-#include "s21_decimal.h"
 #include <time.h>
 
+#include "s21_decimal.h"
+
 int main() {
-  clock_t t1 =  clock(), t2;
+  clock_t t1 = clock(), t2;
   s21_decimal dec1 = {0};
   // s21_decimal dec2 = {0};
   // s21_decimal dec3 = {0};
@@ -49,7 +50,6 @@ int main() {
   // res = s21_is_not_equal(dec1, dec2);
   // printf("dec1 != dec2 : %d\n", res);
 
-
   /* test convertation*/
   dec1 = init_decimal(0b1111111111111111111111111111111, 0, 0, 1, 1);
   print_decimal(dec1);
@@ -65,8 +65,8 @@ int main() {
   code = s21_from_decimal_to_int(dec1, &a);
   printf("код выполнения: %d\t %d \n", code, a);
 
-
   t2 = clock();
-  printf("время выполнения программы: %lf sec", (double)(t2-t1)/CLOCKS_PER_SEC);
+  printf("время выполнения программы: %lf sec",
+         (double)(t2 - t1) / CLOCKS_PER_SEC);
   return 0;
 }

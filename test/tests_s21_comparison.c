@@ -77,7 +77,7 @@ END_TEST
 
 START_TEST(equal_neg_zero) {
   s21_decimal val1 = {{0, 0, 0, (unsigned int)-2147483648}};  // -0
-  s21_decimal val2 = {{0, 0, 0, 0}};            // 0
+  s21_decimal val2 = {{0, 0, 0, 0}};                          // 0
 
   ck_assert_int_eq(s21_is_equal(val1, val2), 1);
 }

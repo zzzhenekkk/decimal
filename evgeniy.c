@@ -1,13 +1,12 @@
 #include "s21_decimal.h"
 
 int main() {
-
   s21_decimal num1 = {{-1, -1, -1688, 0}};
   s21_decimal num2 = {{44, 369, 1687, 0}};
   s21_decimal res = {{0, 0, 0, 0}};
   int status = s21_add(num1, num2, &res);
-  printf("status %d",status);
-  
+  printf("status %d", status);
+
   // ck_assert_int_eq(status, 1);
   // ck_assert_int_eq(res.bits[0], 43);
   // ck_assert_int_eq(res.bits[1], 369);
@@ -40,7 +39,6 @@ int main() {
   // resss = s21_add(res, val2, &res);
   // printf("\n!!!%d!!!\n", resss);
   // print_decimal(res);
-
 
   // s21_decimal val1 = {0};
   // s21_decimal val2 = {0};

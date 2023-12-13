@@ -165,8 +165,8 @@ START_TEST(mul_normalXsmall) {
   // print_decimal(num2);
   // printf("\n!!!!!!!!\n");
   int status = s21_mul(num1, num2, &res);
-  // s21_decimal res2 = {{(unsigned int)4, (unsigned int)0, (unsigned int)0, (unsigned int)1572864}};
-  // printf("\n!!!!!!!!\n");
+  // s21_decimal res2 = {{(unsigned int)4, (unsigned int)0, (unsigned int)0,
+  // (unsigned int)1572864}}; printf("\n!!!!!!!!\n");
 
   // print_decimal(res);
   // print_decimal(res2);
@@ -186,12 +186,13 @@ START_TEST(mul_floatXsmall) {
   // print_decimal(num2);
   // printf("\n!!!!!!!!\n");
   int status = s21_mul(num1, num2, &res);
-  //   s21_decimal res2 = {{(unsigned int)1234566, (unsigned int)0, (unsigned int)0, (unsigned int)1835008}};
+  //   s21_decimal res2 = {{(unsigned int)1234566, (unsigned int)0, (unsigned
+  //   int)0, (unsigned int)1835008}};
   // printf("\n!!!!!!!!\n");
 
   // print_decimal(res);
   // print_decimal(res2);
-  // нужно разобраться 
+  // нужно разобраться
   ck_assert_int_eq(status, 0);
   ck_assert_int_eq(res.bits[0], 1234568);
   ck_assert_int_eq(res.bits[1], 0);
@@ -208,7 +209,8 @@ START_TEST(mul_smallXsmall) {
   // print_decimal(num2);
   // printf("\n!!!!!!!!\n");
   int status = s21_mul(num1, num2, &res);
-  //   s21_decimal res2 = {{(unsigned int)0, (unsigned int)0, (unsigned int)0, (unsigned int)0}};
+  //   s21_decimal res2 = {{(unsigned int)0, (unsigned int)0, (unsigned int)0,
+  //   (unsigned int)0}};
   // printf("\n!!!!!!!!\n");
 
   // print_decimal(res);

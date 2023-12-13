@@ -14,14 +14,16 @@ START_TEST(sub_1_test) {
 END_TEST
 
 START_TEST(sub_2_test) {
-  s21_decimal num1 = {{(unsigned int)-1, (unsigned int)-1, (unsigned int)-1688, (unsigned int)-2147483648}};
+  s21_decimal num1 = {{(unsigned int)-1, (unsigned int)-1, (unsigned int)-1688,
+                       (unsigned int)-2147483648}};
   s21_decimal num2 = {{44, 369, 1687, 0}};
   s21_decimal res = {{0, 0, 0, 0}};
-    //     print_decimal(num1);
-    // print_decimal(num2);
-    // printf("\n!!!!!!!!\n");
+  //     print_decimal(num1);
+  // print_decimal(num2);
+  // printf("\n!!!!!!!!\n");
   int status = s21_sub(num1, num2, &res);
-  //   s21_decimal res2 = {{(unsigned int)43, (unsigned int)369, (unsigned int)0, (unsigned int)-2147483648}};
+  //   s21_decimal res2 = {{(unsigned int)43, (unsigned int)369, (unsigned
+  //   int)0, (unsigned int)-2147483648}};
   // printf("\n!!!!!!!!\n");
 
   // print_decimal(res);
@@ -48,15 +50,17 @@ START_TEST(sub_3_test) {
 END_TEST
 
 START_TEST(sub_4_test) {
-  s21_decimal num1 = {{(unsigned int)-1, (unsigned int)-1, (unsigned int)-1688, 0}};
+  s21_decimal num1 = {
+      {(unsigned int)-1, (unsigned int)-1, (unsigned int)-1688, 0}};
   s21_decimal num2 = {{44, 369, 1687, (unsigned int)-2147483648}};
   s21_decimal res = {{0, 0, 0, 0}};
-    //   print_decimal(num1);
-    // print_decimal(num2);
-    // printf("\n!!!!!!!!\n");
+  //   print_decimal(num1);
+  // print_decimal(num2);
+  // printf("\n!!!!!!!!\n");
 
   int status = s21_sub(num1, num2, &res);
-  //     s21_decimal res2 = {{(unsigned int)43, (unsigned int)369, (unsigned int)0, 0}};
+  //     s21_decimal res2 = {{(unsigned int)43, (unsigned int)369, (unsigned
+  //     int)0, 0}};
   // printf("\n!!!!!!!!\n");
 
   // print_decimal(res);
@@ -96,14 +100,16 @@ START_TEST(sub_6_test) {
 END_TEST
 
 START_TEST(sub_7_test) {
-  s21_decimal num1 = {{(unsigned int)-2, (unsigned int)-1, (unsigned int)-1, 0}};
+  s21_decimal num1 = {
+      {(unsigned int)-2, (unsigned int)-1, (unsigned int)-1, 0}};
   s21_decimal num2 = {{5, 0, 0, 65536}};
   s21_decimal res = {{0, 0, 0, 0}};
-    //     print_decimal(num1);
-    // print_decimal(num2);
-    // printf("\n!!!!!!!!\n");
+  //     print_decimal(num1);
+  // print_decimal(num2);
+  // printf("\n!!!!!!!!\n");
   int status = s21_sub(num1, num2, &res);
-  //       s21_decimal res2 = {{(unsigned int)-3, (unsigned int)-1, (unsigned int)-1, 0}};
+  //       s21_decimal res2 = {{(unsigned int)-3, (unsigned int)-1, (unsigned
+  //       int)-1, 0}};
   // printf("\n!!!!!!!!\n");
 
   // print_decimal(res);
@@ -117,7 +123,8 @@ START_TEST(sub_7_test) {
 END_TEST
 
 START_TEST(sub_8_test) {
-  s21_decimal num1 = {{(unsigned int)-3, (unsigned int)-1, (unsigned int)-1, (unsigned int)-2147483648}};
+  s21_decimal num1 = {{(unsigned int)-3, (unsigned int)-1, (unsigned int)-1,
+                       (unsigned int)-2147483648}};
   s21_decimal num2 = {{7, 0, 0, (unsigned int)-2147418112}};
   s21_decimal res = {{2, 1, 4, 65536}};
   int status = s21_sub(num1, num2, &res);

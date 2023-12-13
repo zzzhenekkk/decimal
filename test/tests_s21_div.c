@@ -44,12 +44,7 @@ START_TEST(div_4_test) {
   s21_decimal num1 = {{10, 0, 0, 0}};
   s21_decimal num2 = {{22, 0, 0, 65536}};
   s21_decimal res = {{0, 0, 0, 0}};
-    //     print_decimal(num1);
-    // print_decimal(num2);
-    // printf("\n!!!!!!!!\n");
-      printf("\n\n\n!!!!!!!!!&&&&&&&&&\n\n\n");
   int status = s21_div(num1, num2, &res);
-  //   s21_decimal res2 = {{(unsigned int)48806447, (unsigned int)-1898527489, (unsigned int)-1830871450, (unsigned int)1835008}};
   // printf("\n!!!!!!!!\n");
 
   // print_decimal(res);
@@ -60,7 +55,6 @@ START_TEST(div_4_test) {
   ck_assert_int_eq(res.bits[1], (unsigned int)-1898527489);
   ck_assert_int_eq(res.bits[2], (unsigned int)-1830871450);
   ck_assert_int_eq(res.bits[3], 1835008);
-
 }
 END_TEST
 
@@ -94,11 +88,12 @@ START_TEST(div_7_test) {
   s21_decimal num1 = {{10, 0, 0, 0}};
   s21_decimal num2 = {{658067456, 1164, 0, 0}};
   s21_decimal res = {{0, 0, 0, 0}};
-    //       print_decimal(num1);
-    // print_decimal(num2);
-    // printf("\n!!!!!!!!\n");
+  //       print_decimal(num1);
+  // print_decimal(num2);
+  // printf("\n!!!!!!!!\n");
   int status = s21_div(num1, num2, &res);
-  //    s21_decimal res2 = {{(unsigned int)2, (unsigned int)0, (unsigned int)0, (unsigned int)786432}};
+  //    s21_decimal res2 = {{(unsigned int)2, (unsigned int)0, (unsigned int)0,
+  //    (unsigned int)786432}};
   // printf("\n!!!!!!!!\n");
 
   // print_decimal(res);
@@ -113,7 +108,8 @@ END_TEST
 
 START_TEST(div_8_test) {
   s21_decimal num1 = {{10, 0, 0, 0}};
-  s21_decimal num2 = {{1879048192, (unsigned int)-1291644761, (unsigned int)-500259693, 0}};
+  s21_decimal num2 = {
+      {1879048192, (unsigned int)-1291644761, (unsigned int)-500259693, 0}};
   s21_decimal res = {{0, 0, 0, 0}};
   int status = s21_div(num1, num2, &res);
   ck_assert_int_eq(status, 0);
@@ -125,7 +121,8 @@ START_TEST(div_8_test) {
 END_TEST
 
 START_TEST(div_9_test) {
-  s21_decimal num1 = {{(unsigned int)-1, (unsigned int)-1, (unsigned int)-1, 0}};
+  s21_decimal num1 = {
+      {(unsigned int)-1, (unsigned int)-1, (unsigned int)-1, 0}};
   s21_decimal num2 = {{2, 0, 0, 0}};
   s21_decimal res = {{0, 0, 0, 0}};
   int status = s21_div(num1, num2, &res);
@@ -138,7 +135,8 @@ START_TEST(div_9_test) {
 END_TEST
 
 START_TEST(div_10_test) {
-  s21_decimal num1 = {{(unsigned int)-1, (unsigned int)-1, (unsigned int)-1, 0}};
+  s21_decimal num1 = {
+      {(unsigned int)-1, (unsigned int)-1, (unsigned int)-1, 0}};
   s21_decimal num2 = {{4, 0, 0, (unsigned int)-2147483648}};
   s21_decimal res = {{0, 0, 0, 0}};
   int status = s21_div(num1, num2, &res);
@@ -151,7 +149,8 @@ START_TEST(div_10_test) {
 END_TEST
 
 START_TEST(div_11_test) {
-  s21_decimal num1 = {{(unsigned int)-1, (unsigned int)-1, (unsigned int)-1, 0}};
+  s21_decimal num1 = {
+      {(unsigned int)-1, (unsigned int)-1, (unsigned int)-1, 0}};
   s21_decimal num2 = {{3, 0, 0, 0}};
   s21_decimal res = {{0, 0, 0, 0}};
   int status = s21_div(num1, num2, &res);
@@ -164,7 +163,8 @@ START_TEST(div_11_test) {
 END_TEST
 
 START_TEST(div_12_test) {
-  s21_decimal num1 = {{(unsigned int)-1, (unsigned int)-1, (unsigned int)-1, 0}};
+  s21_decimal num1 = {
+      {(unsigned int)-1, (unsigned int)-1, (unsigned int)-1, 0}};
   s21_decimal num2 = {{22, 0, 0, 65536}};
   s21_decimal res = {{0, 0, 0, 0}};
   int status = s21_div(num1, num2, &res);
@@ -177,7 +177,8 @@ START_TEST(div_12_test) {
 END_TEST
 
 START_TEST(div_13_test) {
-  s21_decimal num1 = {{(unsigned int)-1, (unsigned int)-1, (unsigned int)-1, 0}};
+  s21_decimal num1 = {
+      {(unsigned int)-1, (unsigned int)-1, (unsigned int)-1, 0}};
   s21_decimal num2 = {{658067456, 1164, 0, 0}};
   s21_decimal res = {{0, 0, 0, 0}};
   int status = s21_div(num1, num2, &res);
@@ -190,8 +191,10 @@ START_TEST(div_13_test) {
 END_TEST
 
 START_TEST(div_14_test) {
-  s21_decimal num1 = {{(unsigned int)-1, (unsigned int)-1, (unsigned int)-1, 0}};
-  s21_decimal num2 = {{1879048192, (unsigned int)-1291644761, (unsigned int)-500259693, 0}};
+  s21_decimal num1 = {
+      {(unsigned int)-1, (unsigned int)-1, (unsigned int)-1, 0}};
+  s21_decimal num2 = {
+      {1879048192, (unsigned int)-1291644761, (unsigned int)-500259693, 0}};
   s21_decimal res = {{0, 0, 0, 0}};
   int status = s21_div(num1, num2, &res);
   ck_assert_int_eq(status, 0);
@@ -203,15 +206,16 @@ START_TEST(div_14_test) {
 END_TEST
 
 START_TEST(div_15_test) {
-  s21_decimal num1 = {{(unsigned int)-1, (unsigned int)-1, (unsigned int)-1, 0}};
+  s21_decimal num1 = {
+      {(unsigned int)-1, (unsigned int)-1, (unsigned int)-1, 0}};
   s21_decimal num2 = {{805306368, (unsigned int)-1167128797, 1626303258, 0}};
   s21_decimal res = {{0, 0, 0, 0}};
-    //     print_decimal(num1);
-    // print_decimal(num2);
-    // printf("\n!!!!!!!!\n");
-  int status = s21_div(num1, num2, &res);
-  // s21_decimal res2 = {{(unsigned int)1431655766, (unsigned int)1431655765, (unsigned int)1431655765, (unsigned int)1835008}};
+  //     print_decimal(num1);
+  // print_decimal(num2);
   // printf("\n!!!!!!!!\n");
+  int status = s21_div(num1, num2, &res);
+  // s21_decimal res2 = {{(unsigned int)1431655766, (unsigned int)1431655765,
+  // (unsigned int)1431655765, (unsigned int)1835008}}; printf("\n!!!!!!!!\n");
 
   // print_decimal(res);
   // print_decimal(res2);
@@ -224,7 +228,8 @@ START_TEST(div_15_test) {
 END_TEST
 
 START_TEST(div_16_test) {
-  s21_decimal num1 = {{(unsigned int)-1, (unsigned int)-1, (unsigned int)-1, 1835008}};
+  s21_decimal num1 = {
+      {(unsigned int)-1, (unsigned int)-1, (unsigned int)-1, 1835008}};
   s21_decimal num2 = {{2, 0, 0, 0}};
   s21_decimal res = {{0, 0, 0, 0}};
   int status = s21_div(num1, num2, &res);
@@ -237,7 +242,8 @@ START_TEST(div_16_test) {
 END_TEST
 
 START_TEST(div_17_test) {
-  s21_decimal num1 = {{(unsigned int)-1, (unsigned int)-1, (unsigned int)-1, 1835008}};
+  s21_decimal num1 = {
+      {(unsigned int)-1, (unsigned int)-1, (unsigned int)-1, 1835008}};
   s21_decimal num2 = {{4, 0, 0, (unsigned int)-2147483648}};
   s21_decimal res = {{0, 0, 0, 0}};
   int status = s21_div(num1, num2, &res);
@@ -259,7 +265,8 @@ START_TEST(div_18_test) {
 END_TEST
 
 START_TEST(div_19_test) {
-  s21_decimal num1 = {{(unsigned int)-1, (unsigned int)-1, (unsigned int)-1, 0}};
+  s21_decimal num1 = {
+      {(unsigned int)-1, (unsigned int)-1, (unsigned int)-1, 0}};
   s21_decimal num2 = {{1, 0, 0, 393216}};
   s21_decimal res = {{0, 0, 0, 0}};
   int status = s21_div(num1, num2, &res);

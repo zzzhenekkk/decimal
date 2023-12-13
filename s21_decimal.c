@@ -1,20 +1,20 @@
 #include "s21_decimal.h"
 
 // распечатаем наш decimal от 0 до 127
-void print_decimal(s21_decimal num) {
-  printf("\n");
-  for (int i = 3; i >= 0; i--) {
-    if (i != 0 && i != 1) printf("[");
-    for (int j = 31; j >= 0; j--) {
-      if (i == 3 && j == 23) printf("->");
-      printf("%d", get_bit(num, i * 32 + j));
-      if (i == 3 && j == 16) printf("<-");
-      if (i == 3 && j == 31) printf(".");
-    }
-    if (i != 1 && i != 2) printf("] ");
-  }
-  printf("\n");
-}
+// void print_decimal(s21_decimal num) {
+//   printf("\n");
+//   for (int i = 3; i >= 0; i--) {
+//     if (i != 0 && i != 1) printf("[");
+//     for (int j = 31; j >= 0; j--) {
+//       if (i == 3 && j == 23) printf("->");
+//       printf("%d", get_bit(num, i * 32 + j));
+//       if (i == 3 && j == 16) printf("<-");
+//       if (i == 3 && j == 31) printf(".");
+//     }
+//     if (i != 1 && i != 2) printf("] ");
+//   }
+//   printf("\n");
+// }
 
 // инициализируем децимал
 s21_decimal init_decimal(int i1, int i2, int i3, int sign, int exp) {
@@ -28,26 +28,26 @@ s21_decimal init_decimal(int i1, int i2, int i3, int sign, int exp) {
 }
 
 // заполняем decimal под макс для проверки
-void full_decimal(s21_decimal * num) {
+void full_decimal(s21_decimal* num) {
   for (int i = 0; i < 96; i++) {
     set_bit(num, i, 1);
   }
 }
 
-int short_div(s21_decimal a, s21_decimal b, s21_decimal *res) {
-  int rest = 0;
-  if (b.bits[1] || b.bits[2]) {
-    printf("too long denominator\n");
-    return rest;
-  }
+// int short_div(s21_decimal a, s21_decimal b, s21_decimal *res) {
+//   int rest = 0;
+//   if (b.bits[1] || b.bits[2]) {
+//     printf("too long denominator\n");
+//     return rest;
+//   }
 
-  unsigned long int shift = 0x100000000, residue = 0;
-  for (int i = 2; i >= 0; i--) {
-    residue += a.bits[i];
-    res->bits[i] = (unsigned int) (residue / b.bits[0]);
-    if (!i) shift = 1;  
-    residue = shift *  (unsigned long int) (residue % b.bits[0]);
-  }
-  rest = residue % b.bits[0];
-  return rest;
-}
+//   unsigned long int shift = 0x100000000, residue = 0;
+//   for (int i = 2; i >= 0; i--) {
+//     residue += a.bits[i];
+//     res->bits[i] = (unsigned int) (residue / b.bits[0]);
+//     if (!i) shift = 1;
+//     residue = shift *  (unsigned long int) (residue % b.bits[0]);
+//   }
+//   rest = residue % b.bits[0];
+//   return rest;
+// }
