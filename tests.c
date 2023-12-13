@@ -7,10 +7,10 @@ int main() {
   int counted_errors = 0;
 
   suite_add_tcase(suite, tcase);
-  // suite_add_tcase(suite, tests_s21_int_to_decimal());
-  // suite_add_tcase(suite, tests_s21_decimal_to_int());
-  // suite_add_tcase(suite, tests_s21_float_to_decimal());
-  // suite_add_tcase(suite, tests_s21_decimal_to_float());
+  suite_add_tcase(suite, tests_s21_int_to_decimal());
+  suite_add_tcase(suite, tests_s21_decimal_to_int());
+  suite_add_tcase(suite, tests_s21_float_to_decimal());
+  suite_add_tcase(suite, tests_s21_decimal_to_float());
   suite_add_tcase(suite, tests_s21_negate());
   suite_add_tcase(suite, tests_s21_add());
   suite_add_tcase(suite, tests_s21_sub());

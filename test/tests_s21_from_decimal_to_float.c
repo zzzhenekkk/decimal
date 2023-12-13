@@ -50,7 +50,7 @@ START_TEST(test_s21_dec_to_float_18_122f) {
   result.bits[1] = 0;
   result.bits[2] = 0;
   result.bits[3] = 0;
-  s21_set_scale(&result, 3);
+  set_scale(&result, 3);
 
   int err = s21_from_decimal_to_float(result, &check);
   ck_assert_float_eq(check, 18.122);
@@ -91,7 +91,7 @@ START_TEST(test_s21_dec_to_float_12345_6789f) {
   result.bits[1] = 0;
   result.bits[2] = 0;
   result.bits[3] = 0;
-  s21_set_scale(&result, 4);
+  set_scale(&result, 4);
   int err = s21_from_decimal_to_float(result, &check);
   ck_assert_float_eq(check, 12345.6789);
   ck_assert_int_eq(err, S21_OK);
@@ -118,7 +118,7 @@ START_TEST(test_s21_dec_to_float_m1234_5678f) {
   result.bits[1] = 0;
   result.bits[2] = 0;
   result.bits[3] = S21_MINUS;
-  s21_set_scale(&result, 4);
+  set_scale(&result, 4);
   int err = s21_from_decimal_to_float(result, &check);
   ck_assert_float_eq(check, -12345.6789F);
   ck_assert_int_eq(err, S21_OK);

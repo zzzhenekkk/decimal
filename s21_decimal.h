@@ -239,4 +239,7 @@ int s21_from_float_to_decimal(float src, s21_decimal *dst);
 void s21_get_float_part(char *part, int *scale, int *length,
                         int *decimal_part);
 
+// перевод из децимал ту флоат
+int s21_from_decimal_to_float(s21_decimal src, float *dst);
+
 #endif  // S21_DECIMAL

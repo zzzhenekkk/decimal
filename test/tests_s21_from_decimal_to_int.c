@@ -44,7 +44,7 @@ START_TEST(test_s21_decimal_to_int_max_scale_1) {
   int test = INT_MAX;
   int result = 0;
   s21_decimal value = {{0, 0, 0, 0}};
-  s21_init_decimal(&value);
+  zero_s21_decimal(&value);
   value.bits[0] = 0b11111111111111111111111111111110;
   value.bits[1] = 0b00000000000000000000000000000000;
   value.bits[2] = 0b00000000000000000000000000000000;
@@ -59,7 +59,7 @@ START_TEST(test_s21_decimal_to_int_max_scale_10) {
   int test = INT_MAX;
   int result = 0;
   s21_decimal value = {{0, 0, 0, 0}};
-  s21_init_decimal(&value);
+  zero_s21_decimal(&value);
   value.bits[0] = 0b11111111111111111111111111111111;
   value.bits[1] = 0b00000000000000000000000111111111;
   value.bits[2] = 0b00000000000000000000000000000000;
@@ -74,7 +74,7 @@ START_TEST(test_s21_decimal_to_int_max_scale_28) {
   int test = INT_MAX;
   int result = 0;
   s21_decimal value = {{0, 0, 0, 0}};
-  s21_init_decimal(&value);
+  zero_s21_decimal(&value);
   value.bits[0] = 0b11111111111111111111111111111111;
   value.bits[1] = 0b00000111111111111111111111111111;
   value.bits[2] = 0b00000000000000000000000000000000;
@@ -88,7 +88,7 @@ END_TEST
 START_TEST(test_s21_decimal_to_int_max_scale_29_error) {
   int result = 0;
   s21_decimal value = {{0, 0, 0, 0}};
-  s21_init_decimal(&value);
+  zero_s21_decimal(&value);
   value.bits[0] = 0b11111111111111111111111111111111;
   value.bits[1] = 0b00000111111111111111111111111111;
   value.bits[2] = 0b00000000000000000000000000000000;
@@ -133,7 +133,7 @@ START_TEST(test_s21_decimal_to_int_min_plus_1_scale_1) {
   int test = INT_MIN + 1;
   int result = 0;
   s21_decimal value = {{0, 0, 0, 0}};
-  s21_init_decimal(&value);
+  zero_s21_decimal(&value);
   value.bits[0] = 0b11111111111111111111111111111110;
   value.bits[1] = 0b00000000000000000000000000000000;
   value.bits[2] = 0b00000000000000000000000000000000;
@@ -148,7 +148,7 @@ START_TEST(test_s21_decimal_to_int_min_plus_1_scale_10) {
   int test = INT_MIN + 1;
   int result = 0;
   s21_decimal value = {{0, 0, 0, 0}};
-  s21_init_decimal(&value);
+  zero_s21_decimal(&value);
   value.bits[0] = 0b11111111111111111111111111111111;
   value.bits[1] = 0b00000000000000000000000111111111;
   value.bits[2] = 0b00000000000000000000000000000000;
@@ -163,7 +163,7 @@ START_TEST(test_s21_decimal_to_int_min_plus_1_scale_28) {
   int test = INT_MIN + 1;
   int result = 0;
   s21_decimal value = {{0, 0, 0, 0}};
-  s21_init_decimal(&value);
+  zero_s21_decimal(&value);
   value.bits[0] = 0b11111111111111111111111111111111;
   value.bits[1] = 0b00000111111111111111111111111111;
   value.bits[2] = 0b00000000000000000000000000000000;
@@ -177,7 +177,7 @@ END_TEST
 START_TEST(test_s21_decimal_to_int_min_plus_1_scale_29_error) {
   int result = 0;
   s21_decimal value = {{0, 0, 0, 0}};
-  s21_init_decimal(&value);
+  zero_s21_decimal(&value);
   value.bits[0] = 0b11111111111111111111111111111111;
   value.bits[1] = 0b00000111111111111111111111111111;
   value.bits[2] = 0b00000000000000000000000000000000;
@@ -191,7 +191,7 @@ END_TEST
 START_TEST(test_s21_decimal_to_int_big_number_error) {
   int result = 0;
   s21_decimal value = {{0, 0, 0, 0}};
-  s21_init_decimal(&value);
+  zero_s21_decimal(&value);
   value.bits[0] = 0b00000000000000000000000000000000;
   value.bits[1] = 0b00000000000000000000000000000000;
   value.bits[2] = 0b00000001000000000000000000000000;
