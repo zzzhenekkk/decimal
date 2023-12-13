@@ -50,13 +50,16 @@ int main() {
 
 
   /* test convertation*/
-  dec1 = init_decimal(34, 1, 0, 0, 0);
+  dec1 = init_decimal(34, 0, 0, 0, 0);
+  print_decimal(dec1);
   // full_decimal(&dec1);
   s21_decimal dec2 = {0};
-  short_div(dec1, init_decimal(10,0,0,0,0), &dec2);
+  s21_decimal ten = init_decimal(10,0,0,0,0);
+  int rest = short_div(dec1, ten, &dec2);
   print_decimal(dec2);
+  printf("residue = %d\n", rest);
   int a, code;
-  printf("%d\n", get_scale(dec1));
+  // printf("%d\n", get_scale(dec1));
   code = s21_from_decimal_to_int(dec1, &a);
   printf("код выполнения: %d\t %d \n", a, code);
 

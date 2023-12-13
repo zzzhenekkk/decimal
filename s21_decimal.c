@@ -41,12 +41,13 @@ int short_div(s21_decimal a, s21_decimal b, s21_decimal *res) {
     return rest;
   }
 
-  unsigned long int shift = 0x80000000, residue = 0;
-  for (int i = 2; i >= 0; i++) {
+  unsigned long int shift = 0x100000000, residue = 0;
+  for (int i = 2; i >= 0; i--) {
     residue += a.bits[i];
     res->bits[i] = (unsigned int) (residue / b.bits[0]);
-    residue = shift * a.bits[i] % b.bits[0];
+    if (!i) shift = 1;  
+    residue = shift *  (unsigned long int) (residue % b.bits[0]);
   }
-  rest = a.bits[0] % b.bits[0];
+  rest = residue % b.bits[0];
   return rest;
 }
