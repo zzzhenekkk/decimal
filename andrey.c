@@ -1,15 +1,16 @@
 #include "s21_decimal.h"
-#include <stdio.h>
+#include <time.h>
 
 int main() {
-   s21_decimal dec1 = {0};
-  //  s21_decimal dec2 = {0}, dec3 = {0};
+  clock_t t1 =  clock(), t2;
+  s21_decimal dec1 = {0};
+  // s21_decimal dec2 = {0}, dec3 = {0};
 
   /* test division */
-  // dec1 = init_decimal(125, 0, 0, 0, 0);
+  // dec1 = init_decimal(34, 0, 0, 0, 20);
   // dec2 = init_decimal(10, 0, 0, 0, 0);
   // big_decimal big1 = {0}, big2 = {0}, res = {0}, rest = {0};
-  // // full_decimal(&dec1);
+  // full_decimal(&dec1);
   // init_big(dec1, &big1);
   // init_big(dec2, &big2);
   // init_big(dec3, &rest);
@@ -49,9 +50,15 @@ int main() {
 
 
   /* test convertation*/
-  dec1 = init_decimal(0x80000000, 1, 0, 1, 0);
+  dec1 = init_decimal(34, 1, 0, 0, 0);
+  // full_decimal(&dec1);
   int a, code;
+  printf("%d\n", get_scale(dec1));
   code = s21_from_decimal_to_int(dec1, &a);
   printf("код выполнения: %d\t %d \n", a, code);
+
+
+  t2 = clock();
+  printf("время выполнения программы: %lf sec", (double)(t2-t1)/CLOCKS_PER_SEC);
   return 0;
 }
