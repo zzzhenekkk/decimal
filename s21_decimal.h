@@ -179,6 +179,9 @@ void full_decimal(s21_decimal* num);
 // проверяет на ноль s21_decimal
 int is_zero_s21_decimal (s21_decimal value);
 
+// для деления на 10 с остатком
+int short_div(s21_decimal a, s21_decimal b, s21_decimal *res);
+
 
 //////////////////////////////cравнения////////////////////////////////////
 

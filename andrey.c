@@ -52,6 +52,9 @@ int main() {
   /* test convertation*/
   dec1 = init_decimal(34, 1, 0, 0, 0);
   // full_decimal(&dec1);
+  s21_decimal dec2 = {0};
+  short_div(dec1, init_decimal(10,0,0,0,0), &dec2);
+  print_decimal(dec2);
   int a, code;
   printf("%d\n", get_scale(dec1));
   code = s21_from_decimal_to_int(dec1, &a);

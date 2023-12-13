@@ -33,3 +33,20 @@ void full_decimal(s21_decimal * num) {
     set_bit(num, i, 1);
   }
 }
+
+int short_div(s21_decimal a, s21_decimal b, s21_decimal *res) {
+  int rest = 0;
+  if (b.bits[1] || b.bits[2]) {
+    printf("too long denominator\n");
+    return rest;
+  }
+
+  unsigned long int shift = 0x80000000, residue = 0;
+  for (int i = 2; i >= 0; i++) {
+    residue += a.bits[i];
+    res->bits[i] = (unsigned int) (residue / b.bits[0]);
+    residue = shift * a.bits[i] % b.bits[0];
+  }
+  rest = a.bits[0] % b.bits[0];
+  return rest;
+}
