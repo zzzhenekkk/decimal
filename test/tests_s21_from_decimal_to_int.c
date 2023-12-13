@@ -217,6 +217,18 @@ START_TEST(test_s21_decimal_to_int_null_error) {
 }
 END_TEST
 
+
+START_TEST(test_s21_decimal_to_int_min) {
+  int test = -2147483648;
+  int result = 0;
+  s21_decimal value = {{(unsigned int)2147483648, 0, 0, 0b10000000000000000000000000000000}};
+  s21_from_decimal_to_int(value, &result);
+  ck_assert_int_eq(test, result);
+}
+END_TEST
+
+// -2147483648
+
 TCase *tests_s21_decimal_to_int(void) {
   TCase *tcase = tcase_create(TCASE_NAME);
 
@@ -237,6 +249,7 @@ TCase *tests_s21_decimal_to_int(void) {
   tcase_add_test(tcase, test_s21_decimal_to_int_min_plus_1_scale_29_error);
   tcase_add_test(tcase, test_s21_decimal_to_int_big_number_error);
   tcase_add_test(tcase, test_s21_decimal_to_int_null_error);
+  tcase_add_test(tcase, test_s21_decimal_to_int_min);
 
   return tcase;
 }

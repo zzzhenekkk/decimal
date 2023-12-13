@@ -31,6 +31,7 @@ START_TEST(div_3_test) {
   s21_decimal num2 = {{3, 0, 0, 0}};
   s21_decimal res = {{0, 0, 0, 0}};
   int status = s21_div(num1, num2, &res);
+
   ck_assert_int_eq(status, 0);
   ck_assert_int_eq(res.bits[0], 894784853);
   ck_assert_int_eq(res.bits[1], (unsigned int)-819591186);
@@ -46,17 +47,20 @@ START_TEST(div_4_test) {
     //     print_decimal(num1);
     // print_decimal(num2);
     // printf("\n!!!!!!!!\n");
+      printf("\n\n\n!!!!!!!!!&&&&&&&&&\n\n\n");
   int status = s21_div(num1, num2, &res);
   //   s21_decimal res2 = {{(unsigned int)48806447, (unsigned int)-1898527489, (unsigned int)-1830871450, (unsigned int)1835008}};
   // printf("\n!!!!!!!!\n");
 
   // print_decimal(res);
   // print_decimal(res2);
+
   ck_assert_int_eq(status, 0);
-  ck_assert_int_eq(res.bits[0], 48806446);
+  ck_assert_int_eq(res.bits[0], 48806447);
   ck_assert_int_eq(res.bits[1], (unsigned int)-1898527489);
   ck_assert_int_eq(res.bits[2], (unsigned int)-1830871450);
   ck_assert_int_eq(res.bits[3], 1835008);
+
 }
 END_TEST
 

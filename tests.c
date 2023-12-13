@@ -16,7 +16,6 @@ int main() {
   suite_add_tcase(suite, tests_s21_sub());
   suite_add_tcase(suite, tests_s21_mul());
   suite_add_tcase(suite, tests_s21_div());
-  // suite_add_tcase(suite, tests_s21_mod());
   suite_add_tcase(suite, tests_s21_truncate());
   suite_add_tcase(suite, tests_s21_floor());
   suite_add_tcase(suite, tests_s21_round());

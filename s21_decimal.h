@@ -245,4 +245,6 @@ void s21_get_float_part(char *part, int *scale, int *length,
 // перевод из децимал ту флоат
 int s21_from_decimal_to_float(s21_decimal src, float *dst);
 
+void bank_round (big_decimal copy_result_big_x, big_decimal * result_big, int exp_diff);
+
 #endif  // S21_DECIMAL

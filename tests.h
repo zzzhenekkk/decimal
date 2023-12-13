@@ -20,7 +20,6 @@ TCase *tests_s21_mul(void);
 TCase *tests_s21_add(void);
 TCase *tests_s21_sub(void);
 TCase *tests_s21_div(void);
-TCase *tests_s21_mod(void);
 TCase *tests_s21_truncate(void);
 TCase *tests_s21_floor(void);
 TCase *tests_s21_round(void);
