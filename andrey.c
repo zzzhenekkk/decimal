@@ -4,7 +4,8 @@
 int main() {
   clock_t t1 =  clock(), t2;
   s21_decimal dec1 = {0};
-  // s21_decimal dec2 = {0}, dec3 = {0};
+  s21_decimal dec2 = {0};
+  // s21_decimal dec3 = {0};
 
   /* test division */
   // dec1 = init_decimal(34, 0, 0, 0, 20);
@@ -25,43 +26,43 @@ int main() {
   // print_big_decimal(&rest);
 
   /* test comparision */
-  // dec1 = init_decimal(9, 0, 0, 0, 3);
-  // dec2 = init_decimal(9, 0, 1, 0, 3);
-  // print_decimal(dec1);
-  // print_decimal(dec2);
+  dec1 = init_decimal(0, 0, 0, (unsigned int)-2147483648, 0);
+  dec2 = init_decimal(0, 0, 0, 0, 0);
+  print_decimal(dec1);
+  print_decimal(dec2);
 
-  // int res = s21_is_less(dec1, dec2);
-  // printf("dec1 < dec2 : %d\n", res);
+  int res = s21_is_less(dec1, dec2);
+  printf("dec1 < dec2 : %d\n", res);
 
-  // res = s21_is_less_or_equal(dec1, dec2);
-  // printf("dec1 <= dec2 : %d\n", res);
+  res = s21_is_less_or_equal(dec1, dec2);
+  printf("dec1 <= dec2 : %d\n", res);
 
-  // res = s21_is_greater(dec1, dec2);
-  // printf("dec1 > dec2 : %d\n", res);
+  res = s21_is_greater(dec1, dec2);
+  printf("dec1 > dec2 : %d\n", res);
 
-  // res = s21_is_greater_or_equal(dec1, dec2);
-  // printf("dec1 >= dec2 : %d\n", res);
+  res = s21_is_greater_or_equal(dec1, dec2);
+  printf("dec1 >= dec2 : %d\n", res);
 
-  // res = s21_is_equal(dec1, dec2);
-  // printf("dec1 == dec2 : %d\n", res);
+  res = s21_is_equal(dec1, dec2);
+  printf("dec1 == dec2 : %d\n", res);
 
-  // res = s21_is_not_equal(dec1, dec2);
-  // printf("dec1 != dec2 : %d\n", res);
+  res = s21_is_not_equal(dec1, dec2);
+  printf("dec1 != dec2 : %d\n", res);
 
 
   /* test convertation*/
-  dec1 = init_decimal(34, 0, 0, 0, 0);
-  print_decimal(dec1);
-  // full_decimal(&dec1);
-  s21_decimal dec2 = {0};
-  s21_decimal ten = init_decimal(10,0,0,0,0);
-  int rest = short_div(dec1, ten, &dec2);
-  print_decimal(dec2);
-  printf("residue = %d\n", rest);
-  int a, code;
-  // printf("%d\n", get_scale(dec1));
-  code = s21_from_decimal_to_int(dec1, &a);
-  printf("код выполнения: %d\t %d \n", a, code);
+  // dec1 = init_decimal(34, 0, 0, 0, 0);
+  // print_decimal(dec1);
+  // // full_decimal(&dec1);
+  // s21_decimal dec2 = {0};
+  // s21_decimal ten = init_decimal(10,0,0,0,0);
+  // int rest = short_div(dec1, ten, &dec2);
+  // print_decimal(dec2);
+  // printf("residue = %d\n", rest);
+  // int a, code;
+  // // printf("%d\n", get_scale(dec1));
+  // code = s21_from_decimal_to_int(dec1, &a);
+  // printf("код выполнения: %d\t %d \n", a, code);
 
 
   t2 = clock();

@@ -520,7 +520,13 @@ int is_zero_big_decimal(big_decimal big) {
 // проверяет на ноль s21_decimal
 int is_zero_s21_decimal(s21_decimal value) {
   int res = 0;
-  res = value.bits[0] + value.bits[1] + value.bits[2];
+  for (int i = 2; i >=0; i--) {
+    if (value.bits[i] != 0) {
+      res = 1;
+      break;
+    }
+  }
+  // res = value.bits[0] + value.bits[1] + value.bits[2];
   return res;
 }
 

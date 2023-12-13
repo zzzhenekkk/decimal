@@ -24,9 +24,9 @@ int comparator(s21_decimal *x1, s21_decimal *x2) {
     // int both_positive = 0;
 
     // проверка чисел на разные знаки
-    if (sign1 == 1 && sign2 == 0)
+    if (sign1 == 1 && sign2 == 0 && (is_zero_s21_decimal(*x1) || is_zero_s21_decimal(*x2)))
         res = -1;
-    else if (sign1 == 0 && sign2 == 1)
+    else if (sign1 == 0 && sign2 == 1 && (is_zero_s21_decimal(*x1) || is_zero_s21_decimal(*x2)))
         res = 1;
     else if (sign1 == 1 && sign2 == 1)
         both_negative = 1;
